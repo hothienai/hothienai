@@ -1,0 +1,796 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Static Variables in C &mdash; Embedded C Programming  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Embedded C Programming
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Embedded C</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../Embedded%20C/introduction.html">Embedded C</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">State Machines</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../State%20Machines/introduction.html">State Machines</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Embedded C Programming</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Static Variables in C</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/C Progamming Language/static-varibles.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="static-variables-in-c">
+<h1>Static Variables in C<a class="headerlink" href="#static-variables-in-c" title="Link to this heading"></a></h1>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">static</span></code> keyword in C is a storage class specifier that fundamentally changes how variables
+behave regarding their scope, lifetime, and visibility. Unlike regular variables, static variables
+persist throughout the entire program execution and are initialized only once.</p>
+<p><strong>Key characteristics of static variables:</strong>
+- Initialized only once (at program start or first function call)
+- Retain their value between function calls
+- Have a lifetime equal to the program’s lifetime
+- Can limit scope to file or function level</p>
+</section>
+<section id="what-is-a-static-variable">
+<h2>What is a Static Variable?<a class="headerlink" href="#what-is-a-static-variable" title="Link to this heading"></a></h2>
+<p>A static variable is a variable that:</p>
+<ol class="arabic simple">
+<li><p><strong>Preserves its value</strong> between function calls (for local static)</p></li>
+<li><p><strong>Exists for the entire program duration</strong> (not destroyed when out of scope)</p></li>
+<li><p><strong>Is initialized only once</strong> (not re-initialized on subsequent calls)</p></li>
+<li><p><strong>Can have file-level scope</strong> (when declared outside functions)</p></li>
+</ol>
+</section>
+<section id="types-of-static-variables">
+<h2>Types of Static Variables<a class="headerlink" href="#types-of-static-variables" title="Link to this heading"></a></h2>
+<p>There are two main types of static variables in C:</p>
+<ol class="arabic simple">
+<li><p><strong>Local Static Variables</strong> - Declared inside functions</p></li>
+<li><p><strong>Global Static Variables</strong> - Declared outside all functions</p></li>
+</ol>
+</section>
+<section id="local-static-variables">
+<h2>Local Static Variables<a class="headerlink" href="#local-static-variables" title="Link to this heading"></a></h2>
+<p>Local static variables are declared inside a function with the <code class="docutils literal notranslate"><span class="pre">static</span></code> keyword.</p>
+<section id="syntax">
+<h3>Syntax<a class="headerlink" href="#syntax" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">function_name</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="n">data_type</span><span class="w"> </span><span class="n">variable_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">initial_value</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="basic-example">
+<h3>Basic Example<a class="headerlink" href="#basic-example" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">counter</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">    </span><span class="c1">// Initialized only once</span>
+<span class="w">    </span><span class="n">count</span><span class="o">++</span><span class="p">;</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Count: %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">count</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">counter</span><span class="p">();</span><span class="w">               </span><span class="c1">// Prints: Count: 1</span>
+<span class="w">    </span><span class="n">counter</span><span class="p">();</span><span class="w">               </span><span class="c1">// Prints: Count: 2</span>
+<span class="w">    </span><span class="n">counter</span><span class="p">();</span><span class="w">               </span><span class="c1">// Prints: Count: 3</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>What happens:</strong>
+- First call: <code class="docutils literal notranslate"><span class="pre">count</span></code> is initialized to 0, incremented to 1
+- Second call: <code class="docutils literal notranslate"><span class="pre">count</span></code> retains value 1, incremented to 2
+- Third call: <code class="docutils literal notranslate"><span class="pre">count</span></code> retains value 2, incremented to 3</p>
+</section>
+<section id="characteristics">
+<h3>Characteristics<a class="headerlink" href="#characteristics" title="Link to this heading"></a></h3>
+<ol class="arabic">
+<li><p><strong>Initialization happens only once</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">test</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span><span class="w">     </span><span class="c1">// Initialized only on first call</span>
+<span class="w">    </span><span class="n">x</span><span class="o">++</span><span class="p">;</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d &quot;</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">test</span><span class="p">();</span><span class="w">               </span><span class="c1">// Prints: 6</span>
+<span class="w">    </span><span class="n">test</span><span class="p">();</span><span class="w">               </span><span class="c1">// Prints: 7</span>
+<span class="w">    </span><span class="n">test</span><span class="p">();</span><span class="w">               </span><span class="c1">// Prints: 8</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Scope is limited to the function</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">function1</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
+<span class="w">    </span><span class="c1">// value is accessible here</span>
+<span class="p">}</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// value is NOT accessible here</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Lifetime is the entire program</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">process</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">100</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="c1">// data continues to exist even after function returns</span>
+<span class="c1">// (but cannot be accessed from outside)</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="default-initialization">
+<h3>Default Initialization<a class="headerlink" href="#default-initialization" title="Link to this heading"></a></h3>
+<p>Static variables are automatically initialized to 0 if not explicitly initialized.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">test</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="p">;</span><span class="w">            </span><span class="c1">// Automatically initialized to 0</span>
+<span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">f</span><span class="p">;</span><span class="w">          </span><span class="c1">// Automatically initialized to 0.0</span>
+<span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">ptr</span><span class="p">;</span><span class="w">        </span><span class="c1">// Automatically initialized to NULL</span>
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;x = %d, f = %.1f</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">f</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="global-static-variables">
+<h2>Global Static Variables<a class="headerlink" href="#global-static-variables" title="Link to this heading"></a></h2>
+<p>Global static variables are declared outside all functions with the <code class="docutils literal notranslate"><span class="pre">static</span></code> keyword.</p>
+<section id="id1">
+<h3>Syntax<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">static</span><span class="w"> </span><span class="n">data_type</span><span class="w"> </span><span class="n">variable_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">initial_value</span><span class="p">;</span>
+</pre></div>
+</div>
+</section>
+<section id="purpose">
+<h3>Purpose<a class="headerlink" href="#purpose" title="Link to this heading"></a></h3>
+<p>Global static variables limit the visibility of a variable to the file in which it is declared.
+This is also called <strong>file scope</strong> or <strong>internal linkage</strong>.</p>
+</section>
+<section id="example">
+<h3>Example<a class="headerlink" href="#example" title="Link to this heading"></a></h3>
+<p><strong>file1.c:</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+
+<span class="k">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">file_counter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">  </span><span class="c1">// Only accessible in file1.c</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">increment_file1</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">file_counter</span><span class="o">++</span><span class="p">;</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;File1 counter: %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">file_counter</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>file2.c:</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+
+<span class="k">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">file_counter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">  </span><span class="c1">// Different variable, only in file2.c</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">increment_file2</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">file_counter</span><span class="o">++</span><span class="p">;</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;File2 counter: %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">file_counter</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Both files can have a variable with the same name without conflict because the <code class="docutils literal notranslate"><span class="pre">static</span></code>
+keyword limits their scope to their respective files.</p>
+</section>
+<section id="benefits">
+<h3>Benefits<a class="headerlink" href="#benefits" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p><strong>Prevents naming conflicts</strong> between different source files</p></li>
+<li><p><strong>Encapsulation</strong> - hides implementation details</p></li>
+<li><p><strong>Reduces pollution</strong> of the global namespace</p></li>
+</ol>
+</section>
+<section id="comparison-with-non-static">
+<h3>Comparison with Non-Static<a class="headerlink" href="#comparison-with-non-static" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// Without static (external linkage)</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">global_var</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">100</span><span class="p">;</span><span class="w">        </span><span class="c1">// Accessible from other files via extern</span>
+
+<span class="c1">// With static (internal linkage)</span>
+<span class="k">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">file_var</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">100</span><span class="p">;</span><span class="w">   </span><span class="c1">// Only accessible in this file</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="use-cases-for-static-variables">
+<h2>Use Cases for Static Variables<a class="headerlink" href="#use-cases-for-static-variables" title="Link to this heading"></a></h2>
+<section id="function-call-counters">
+<h3>1. Function Call Counters<a class="headerlink" href="#function-call-counters" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">log_message</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">msg</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">call_count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="n">call_count</span><span class="o">++</span><span class="p">;</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;[%d] %s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">call_count</span><span class="p">,</span><span class="w"> </span><span class="n">msg</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">log_message</span><span class="p">(</span><span class="s">&quot;First message&quot;</span><span class="p">);</span><span class="w">    </span><span class="c1">// [1] First message</span>
+<span class="w">    </span><span class="n">log_message</span><span class="p">(</span><span class="s">&quot;Second message&quot;</span><span class="p">);</span><span class="w">   </span><span class="c1">// [2] Second message</span>
+<span class="w">    </span><span class="n">log_message</span><span class="p">(</span><span class="s">&quot;Third message&quot;</span><span class="p">);</span><span class="w">    </span><span class="c1">// [3] Third message</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="unique-id-generation">
+<h3>2. Unique ID Generation<a class="headerlink" href="#unique-id-generation" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">generate_id</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">next_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1000</span><span class="p">;</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">next_id</span><span class="o">++</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">id1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">generate_id</span><span class="p">();</span><span class="w">  </span><span class="c1">// 1000</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">id2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">generate_id</span><span class="p">();</span><span class="w">  </span><span class="c1">// 1001</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">id3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">generate_id</span><span class="p">();</span><span class="w">  </span><span class="c1">// 1002</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="one-time-initialization">
+<h3>3. One-Time Initialization<a class="headerlink" href="#one-time-initialization" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">initialize_once</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">initialized</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">initialized</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Performing initialization...</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="c1">// Do expensive initialization</span>
+<span class="w">        </span><span class="n">initialized</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Function running...</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">initialize_once</span><span class="p">();</span><span class="w">  </span><span class="c1">// Performs initialization</span>
+<span class="w">    </span><span class="n">initialize_once</span><span class="p">();</span><span class="w">  </span><span class="c1">// Skips initialization</span>
+<span class="w">    </span><span class="n">initialize_once</span><span class="p">();</span><span class="w">  </span><span class="c1">// Skips initialization</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="state-machines">
+<h3>4. State Machines<a class="headerlink" href="#state-machines" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="k">enum</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">STATE_IDLE</span><span class="p">,</span>
+<span class="w">    </span><span class="n">STATE_RUNNING</span><span class="p">,</span>
+<span class="w">    </span><span class="n">STATE_PAUSED</span><span class="p">,</span>
+<span class="w">    </span><span class="n">STATE_STOPPED</span>
+<span class="p">}</span><span class="w"> </span><span class="n">State</span><span class="p">;</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">state_machine</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">event</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="n">State</span><span class="w"> </span><span class="n">current_state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">STATE_IDLE</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">current_state</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="no">STATE_IDLE</span><span class="p">:</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">event</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">START</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="n">current_state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">STATE_RUNNING</span><span class="p">;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">            </span><span class="k">break</span><span class="p">;</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="no">STATE_RUNNING</span><span class="p">:</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">event</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">PAUSE</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="n">current_state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">STATE_PAUSED</span><span class="p">;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">            </span><span class="k">break</span><span class="p">;</span>
+<span class="w">        </span><span class="c1">// ... more states</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="caching-memoization">
+<h3>5. Caching/Memoization<a class="headerlink" href="#caching-memoization" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">fibonacci</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">cache</span><span class="p">[</span><span class="mi">100</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">n</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">n</span><span class="p">;</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">cache</span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">cache</span><span class="p">[</span><span class="n">n</span><span class="p">];</span><span class="w">  </span><span class="c1">// Return cached value</span>
+
+<span class="w">    </span><span class="n">cache</span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fibonacci</span><span class="p">(</span><span class="n">n</span><span class="mi">-1</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">fibonacci</span><span class="p">(</span><span class="n">n</span><span class="mi">-2</span><span class="p">);</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">cache</span><span class="p">[</span><span class="n">n</span><span class="p">];</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="singleton-pattern">
+<h3>6. Singleton Pattern<a class="headerlink" href="#singleton-pattern" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">data</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">name</span><span class="p">[</span><span class="mi">50</span><span class="p">];</span>
+<span class="p">}</span><span class="w"> </span><span class="n">Config</span><span class="p">;</span>
+
+<span class="n">Config</span><span class="o">*</span><span class="w"> </span><span class="nf">get_config</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="n">Config</span><span class="w"> </span><span class="n">instance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Default&quot;</span><span class="p">};</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="o">&amp;</span><span class="n">instance</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">Config</span><span class="w"> </span><span class="o">*</span><span class="n">cfg1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_config</span><span class="p">();</span>
+<span class="w">    </span><span class="n">Config</span><span class="w"> </span><span class="o">*</span><span class="n">cfg2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_config</span><span class="p">();</span>
+<span class="w">    </span><span class="c1">// cfg1 and cfg2 point to the same static instance</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="static-vs-regular-variables">
+<h2>Static vs Regular Variables<a class="headerlink" href="#static-vs-regular-variables" title="Link to this heading"></a></h2>
+<section id="comparison-table">
+<h3>Comparison Table<a class="headerlink" href="#comparison-table" title="Link to this heading"></a></h3>
+<table class="docutils align-default" id="id6">
+<caption><span class="caption-text">Static vs Regular Local Variables</span><a class="headerlink" href="#id6" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 30.0%" />
+<col style="width: 35.0%" />
+<col style="width: 35.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Feature</p></th>
+<th class="head"><p>Regular Variable</p></th>
+<th class="head"><p>Static Variable</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Initialization</p></td>
+<td><p>Every function call</p></td>
+<td><p>Only once (first call)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Lifetime</p></td>
+<td><p>Function scope</p></td>
+<td><p>Entire program</p></td>
+</tr>
+<tr class="row-even"><td><p>Scope</p></td>
+<td><p>Function only</p></td>
+<td><p>Function only</p></td>
+</tr>
+<tr class="row-odd"><td><p>Default value</p></td>
+<td><p>Undefined (garbage)</p></td>
+<td><p>Zero</p></td>
+</tr>
+<tr class="row-even"><td><p>Memory location</p></td>
+<td><p>Stack</p></td>
+<td><p>Data segment</p></td>
+</tr>
+<tr class="row-odd"><td><p>Destroyed when</p></td>
+<td><p>Function returns</p></td>
+<td><p>Program ends</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="code-example">
+<h3>Code Example<a class="headerlink" href="#code-example" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">compare_variables</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">regular</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">         </span><span class="c1">// Re-initialized each call</span>
+<span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">static_var</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">  </span><span class="c1">// Initialized only once</span>
+
+<span class="w">    </span><span class="n">regular</span><span class="o">++</span><span class="p">;</span>
+<span class="w">    </span><span class="n">static_var</span><span class="o">++</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Regular: %d, Static: %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">regular</span><span class="p">,</span><span class="w"> </span><span class="n">static_var</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">compare_variables</span><span class="p">();</span><span class="w">     </span><span class="c1">// Regular: 1, Static: 1</span>
+<span class="w">    </span><span class="n">compare_variables</span><span class="p">();</span><span class="w">     </span><span class="c1">// Regular: 1, Static: 2</span>
+<span class="w">    </span><span class="n">compare_variables</span><span class="p">();</span><span class="w">     </span><span class="c1">// Regular: 1, Static: 3</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="static-functions">
+<h2>Static Functions<a class="headerlink" href="#static-functions" title="Link to this heading"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">static</span></code> keyword can also be applied to functions to limit their visibility to the
+file in which they are defined.</p>
+<section id="id2">
+<h3>Syntax<a class="headerlink" href="#id2" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">static</span><span class="w"> </span><span class="n">return_type</span><span class="w"> </span><span class="nf">function_name</span><span class="p">(</span><span class="n">parameters</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// function body</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="id3">
+<h3>Example<a class="headerlink" href="#id3" title="Link to this heading"></a></h3>
+<p><strong>file1.c:</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+
+<span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">helper</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">       </span><span class="c1">// Only visible in file1.c</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Helper function</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">public_function</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">     </span><span class="c1">// Visible to other files</span>
+<span class="w">    </span><span class="n">helper</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>file2.c:</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// void helper();            // Error! Cannot access static function</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">public_function</span><span class="p">();</span><span class="w">      </span><span class="c1">// OK - can access non-static function</span>
+</pre></div>
+</div>
+</section>
+<section id="id4">
+<h3>Benefits<a class="headerlink" href="#id4" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p><strong>Encapsulation</strong> - Hide implementation details</p></li>
+<li><p><strong>Prevents name conflicts</strong> - Different files can have functions with the same name</p></li>
+<li><p><strong>Optimization</strong> - Compiler can better optimize file-local functions</p></li>
+</ol>
+</section>
+</section>
+<section id="memory-layout">
+<h2>Memory Layout<a class="headerlink" href="#memory-layout" title="Link to this heading"></a></h2>
+<p>Static variables are stored in the <strong>data segment</strong> of the program, not on the stack.</p>
+<section id="memory-segments">
+<h3>Memory Segments<a class="headerlink" href="#memory-segments" title="Link to this heading"></a></h3>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>┌─────────────────┐
+│     Stack       │  ← Regular local variables
+├─────────────────┤
+│     Heap        │  ← Dynamic allocation (malloc)
+├─────────────────┤
+│  BSS Segment    │  ← Uninitialized static/global variables
+├─────────────────┤
+│  Data Segment   │  ← Initialized static/global variables
+├─────────────────┤
+│  Code Segment   │  ← Program code
+└─────────────────┘
+</pre></div>
+</div>
+</section>
+<section id="id5">
+<h3>Example<a class="headerlink" href="#id5" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">global</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w">             </span><span class="c1">// Data segment</span>
+<span class="k">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">file_static</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">20</span><span class="p">;</span><span class="w"> </span><span class="c1">// Data segment</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">function</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">local</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">30</span><span class="p">;</span><span class="w">          </span><span class="c1">// Stack</span>
+<span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">func_static</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">40</span><span class="p">;</span><span class="w">  </span><span class="c1">// Data segment</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="best-practices">
+<h2>Best Practices<a class="headerlink" href="#best-practices" title="Link to this heading"></a></h2>
+<ol class="arabic">
+<li><p><strong>Use static for file-scope variables</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// In .c file</span>
+<span class="k">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">module_counter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">  </span><span class="c1">// Hide from other files</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Use static for helper functions</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">calculate_helper</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Initialize static variables explicitly</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">     </span><span class="c1">// Explicit (clearer intent)</span>
+<span class="c1">// vs</span>
+<span class="k">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">count</span><span class="p">;</span><span class="w">         </span><span class="c1">// Implicit zero initialization</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Use static for one-time initialization flags</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">init_module</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">initialized</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">initialized</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Initialize once</span>
+<span class="w">        </span><span class="n">initialized</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Minimize use of static variables (when possible)</strong></p>
+<p>Static variables can make code harder to test and debug. Consider:
+- Passing parameters instead
+- Using structures to hold state
+- Limiting static usage to truly necessary cases</p>
+</li>
+</ol>
+</section>
+<section id="common-pitfalls">
+<h2>Common Pitfalls<a class="headerlink" href="#common-pitfalls" title="Link to this heading"></a></h2>
+<section id="thread-safety-issues">
+<h3>1. Thread Safety Issues<a class="headerlink" href="#thread-safety-issues" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// NOT thread-safe!</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">counter</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="n">count</span><span class="o">++</span><span class="p">;</span><span class="w">                 </span><span class="c1">// Race condition in multi-threaded code</span>
+<span class="p">}</span>
+
+<span class="c1">// Solution: Use mutexes or atomic operations</span>
+</pre></div>
+</div>
+</section>
+<section id="unexpected-persistence">
+<h3>2. Unexpected Persistence<a class="headerlink" href="#unexpected-persistence" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">process_data</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">reset</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">sum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">reset</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">sum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">             </span><span class="c1">// Manual reset needed</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="n">sum</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="initialization-order">
+<h3>3. Initialization Order<a class="headerlink" href="#initialization-order" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
+<span class="k">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span><span class="w">        </span><span class="c1">// OK in C, but avoid complex initialization</span>
+</pre></div>
+</div>
+</section>
+<section id="cannot-take-address-in-initializer">
+<h3>4. Cannot Take Address in Initializer<a class="headerlink" href="#cannot-take-address-in-initializer" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">test</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
+<span class="w">    </span><span class="c1">// static int *ptr = &amp;x;  // Error! Cannot initialize with non-constant</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="practice-examples">
+<h2>Practice Examples<a class="headerlink" href="#practice-examples" title="Link to this heading"></a></h2>
+<section id="example-1-function-call-counter">
+<h3>Example 1: Function Call Counter<a class="headerlink" href="#example-1-function-call-counter" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">print_hello</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">times_called</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="n">times_called</span><span class="o">++</span><span class="p">;</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Hello! (Called %d times)</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">times_called</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">print_hello</span><span class="p">();</span><span class="w">           </span><span class="c1">// Hello! (Called 1 times)</span>
+<span class="w">    </span><span class="n">print_hello</span><span class="p">();</span><span class="w">           </span><span class="c1">// Hello! (Called 2 times)</span>
+<span class="w">    </span><span class="n">print_hello</span><span class="p">();</span><span class="w">           </span><span class="c1">// Hello! (Called 3 times)</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="example-2-id-generator">
+<h3>Example 2: ID Generator<a class="headerlink" href="#example-2-id-generator" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">get_unique_id</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="o">++</span><span class="n">id</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;ID: %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">get_unique_id</span><span class="p">());</span><span class="w">  </span><span class="c1">// ID: 1</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;ID: %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">get_unique_id</span><span class="p">());</span><span class="w">  </span><span class="c1">// ID: 2</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;ID: %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">get_unique_id</span><span class="p">());</span><span class="w">  </span><span class="c1">// ID: 3</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="example-3-average-calculator">
+<h3>Example 3: Average Calculator<a class="headerlink" href="#example-3-average-calculator" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+
+<span class="kt">float</span><span class="w"> </span><span class="nf">running_average</span><span class="p">(</span><span class="kt">float</span><span class="w"> </span><span class="n">new_value</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">sum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span>
+<span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">sum</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">new_value</span><span class="p">;</span>
+<span class="w">    </span><span class="n">count</span><span class="o">++</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">sum</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">count</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Average: %.2f</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">running_average</span><span class="p">(</span><span class="mf">10.0</span><span class="p">));</span><span class="w">  </span><span class="c1">// 10.00</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Average: %.2f</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">running_average</span><span class="p">(</span><span class="mf">20.0</span><span class="p">));</span><span class="w">  </span><span class="c1">// 15.00</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Average: %.2f</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">running_average</span><span class="p">(</span><span class="mf">30.0</span><span class="p">));</span><span class="w">  </span><span class="c1">// 20.00</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="example-4-toggle-function">
+<h3>Example 4: Toggle Function<a class="headerlink" href="#example-4-toggle-function" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">toggle_led</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="n">state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">!</span><span class="n">state</span><span class="p">;</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;LED is %s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="s">&quot;ON&quot;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s">&quot;OFF&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">toggle_led</span><span class="p">();</span><span class="w">            </span><span class="c1">// LED is ON</span>
+<span class="w">    </span><span class="n">toggle_led</span><span class="p">();</span><span class="w">            </span><span class="c1">// LED is OFF</span>
+<span class="w">    </span><span class="n">toggle_led</span><span class="p">();</span><span class="w">            </span><span class="c1">// LED is ON</span>
+<span class="w">    </span><span class="n">toggle_led</span><span class="p">();</span><span class="w">            </span><span class="c1">// LED is OFF</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="example-5-file-scope-static">
+<h3>Example 5: File-Scope Static<a class="headerlink" href="#example-5-file-scope-static" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+
+<span class="k">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">module_data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">100</span><span class="p">;</span><span class="w">  </span><span class="c1">// File scope only</span>
+
+<span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">private_function</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Private: %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">module_data</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">public_function</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">private_function</span><span class="p">();</span>
+<span class="w">    </span><span class="n">module_data</span><span class="o">++</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">public_function</span><span class="p">();</span><span class="w">       </span><span class="c1">// Private: 100</span>
+<span class="w">    </span><span class="n">public_function</span><span class="p">();</span><span class="w">       </span><span class="c1">// Private: 101</span>
+<span class="w">    </span><span class="c1">// private_function();   // OK - same file</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="example-6-state-machine">
+<h3>Example 6: State Machine<a class="headerlink" href="#example-6-state-machine" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+
+<span class="k">typedef</span><span class="w"> </span><span class="k">enum</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">OFF</span><span class="p">,</span><span class="w"> </span><span class="n">ON</span><span class="p">,</span><span class="w"> </span><span class="n">BLINKING</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="n">LedState</span><span class="p">;</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">led_state_machine</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">button_press</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="n">LedState</span><span class="w"> </span><span class="n">state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">OFF</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">button_press</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">state</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">case</span><span class="w"> </span><span class="no">OFF</span><span class="p">:</span>
+<span class="w">                </span><span class="n">state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ON</span><span class="p">;</span>
+<span class="w">                </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;LED: ON</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="w">                </span><span class="k">break</span><span class="p">;</span>
+<span class="w">            </span><span class="k">case</span><span class="w"> </span><span class="no">ON</span><span class="p">:</span>
+<span class="w">                </span><span class="n">state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BLINKING</span><span class="p">;</span>
+<span class="w">                </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;LED: BLINKING</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="w">                </span><span class="k">break</span><span class="p">;</span>
+<span class="w">            </span><span class="k">case</span><span class="w"> </span><span class="no">BLINKING</span><span class="p">:</span>
+<span class="w">                </span><span class="n">state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">OFF</span><span class="p">;</span>
+<span class="w">                </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;LED: OFF</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="w">                </span><span class="k">break</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">led_state_machine</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span><span class="w">    </span><span class="c1">// LED: ON</span>
+<span class="w">    </span><span class="n">led_state_machine</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span><span class="w">    </span><span class="c1">// LED: BLINKING</span>
+<span class="w">    </span><span class="n">led_state_machine</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span><span class="w">    </span><span class="c1">// LED: OFF</span>
+<span class="w">    </span><span class="n">led_state_machine</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span><span class="w">    </span><span class="c1">// LED: ON</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">static</span></code> keyword changes variable scope, lifetime, and visibility</p></li>
+<li><p>Local static variables retain their value between function calls</p></li>
+<li><p>Static variables are initialized only once</p></li>
+<li><p>Default initialization is zero (not garbage)</p></li>
+<li><p>Global static variables limit visibility to the current file</p></li>
+<li><p>Static variables exist in data segment, not on stack</p></li>
+<li><p>Useful for counters, state machines, caching, and singletons</p></li>
+<li><p>Can make testing harder, so use judiciously</p></li>
+<li><p>Not thread-safe by default - requires synchronization</p></li>
+<li><p>Static functions provide file-scope encapsulation</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Ho Thien Ai.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
