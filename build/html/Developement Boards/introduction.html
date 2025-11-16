@@ -1,0 +1,245 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Development Boards &mdash; Embedded C Programming  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="State Machines" href="../State%20Machines/introduction.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Embedded C Programming
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../C%20Language/introduction.html">C Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Embedded%20C/introduction.html">Embedded C</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../State%20Machines/introduction.html">State Machines</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Development Boards</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#topics-to-be-covered">Topics to be covered</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Embedded C Programming</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Development Boards</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/Developement Boards/introduction.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="development-boards">
+<h1>Development Boards<a class="headerlink" href="#development-boards" title="Link to this heading"></a></h1>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
+<p>This section provides practical guidance on working with popular embedded development boards.
+You’ll learn about board architectures, development environments, toolchains, and how to get
+started with hands-on embedded programming projects using real hardware.</p>
+</section>
+<section id="topics-to-be-covered">
+<h2>Topics to be covered<a class="headerlink" href="#topics-to-be-covered" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p><strong>Introduction to Development Boards</strong>
+- What is a development board?
+- Development board vs production hardware
+- Evaluation boards vs learning platforms
+- Selecting the right board for your project</p></li>
+<li><p><strong>Popular Microcontroller Families</strong>
+- ARM Cortex-M series (STM32, NXP, etc.)
+- AVR (Arduino, ATmega)
+- PIC microcontrollers
+- ESP32/ESP8266 (Wi-Fi enabled)
+- Raspberry Pi Pico (RP2040)</p></li>
+<li><p><strong>Arduino Platform</strong>
+- Arduino Uno, Nano, Mega
+- Arduino IDE setup
+- Arduino libraries and ecosystem
+- Arduino vs bare-metal programming
+- Uploading and debugging</p></li>
+<li><p><strong>STM32 Development Boards</strong>
+- STM32 Nucleo boards
+- STM32 Discovery boards
+- STM32CubeIDE setup
+- HAL vs LL libraries
+- STM32CubeMX configuration tool</p></li>
+<li><p><strong>ESP32/ESP8266 Boards</strong>
+- NodeMCU and development boards
+- ESP-IDF vs Arduino framework
+- Wi-Fi and Bluetooth capabilities
+- IoT applications
+- OTA (Over-The-Air) updates</p></li>
+<li><p><strong>Raspberry Pi Pico</strong>
+- RP2040 microcontroller features
+- MicroPython vs C/C++ SDK
+- PIO (Programmable I/O)
+- Dual-core programming
+- Development environment setup</p></li>
+<li><p><strong>Development Environment Setup</strong>
+- IDE selection (VS Code, Eclipse, Keil, IAR)
+- Compiler toolchains (GCC, Clang)
+- Build systems (Make, CMake)
+- Version control integration
+- Debugging tools</p></li>
+<li><p><strong>Programming and Flashing</strong>
+- USB-to-serial converters
+- ST-Link, J-Link programmers
+- JTAG and SWD interfaces
+- Bootloaders
+- Flash memory programming</p></li>
+<li><p><strong>Board Features and Peripherals</strong>
+- On-board LEDs and buttons
+- USB connectivity
+- Serial communication (UART)
+- Power supply options
+- Clock sources (crystals, oscillators)</p></li>
+<li><p><strong>Debugging Hardware</strong>
+- On-board debuggers
+- External debug probes
+- Serial wire debug (SWD)
+- Real-time debugging
+- Breakpoints and watchpoints</p></li>
+<li><p><strong>Shields and Expansion Boards</strong>
+- Arduino shields
+- STM32 expansion boards (X-NUCLEO)
+- Sensor modules
+- Display modules
+- Motor driver shields</p></li>
+<li><p><strong>Power Management</strong>
+- USB power vs external power
+- Voltage regulators
+- Battery operation
+- Power consumption measurement
+- Low-power modes</p></li>
+<li><p><strong>Pin Configuration</strong>
+- GPIO pin mapping
+- Pin multiplexing (alternate functions)
+- Voltage levels (3.3V vs 5V)
+- Pin protection and limitations
+- Breadboard connections</p></li>
+<li><p><strong>Example Projects</strong>
+- Blinking LED (Hello World)
+- Button input and debouncing
+- UART communication
+- ADC reading (sensors)
+- PWM control (LED dimming, servo)</p></li>
+<li><p><strong>Communication Interfaces</strong>
+- I2C device connection
+- SPI peripheral interfacing
+- UART console and debugging
+- USB CDC (Virtual COM Port)
+- CAN bus (if available)</p></li>
+<li><p><strong>Sensor Integration</strong>
+- Temperature and humidity sensors
+- Motion sensors (accelerometer, gyroscope)
+- Light sensors
+- Distance sensors (ultrasonic, IR)
+- Sensor libraries and drivers</p></li>
+<li><p><strong>Display Integration</strong>
+- LCD character displays
+- OLED displays
+- TFT color displays
+- 7-segment displays
+- Graphics libraries</p></li>
+<li><p><strong>Wireless Communication</strong>
+- Wi-Fi modules
+- Bluetooth (Classic and BLE)
+- LoRa/LoRaWAN
+- NFC/RFID readers
+- Radio modules (nRF24L01)</p></li>
+<li><p><strong>Prototyping and Testing</strong>
+- Breadboard prototyping
+- Jumper wires and connections
+- Multimeter measurements
+- Logic analyzer usage
+- Oscilloscope basics</p></li>
+<li><p><strong>Best Practices</strong>
+- Hardware handling and care
+- ESD protection
+- Proper connections and wiring
+- Power supply considerations
+- Documentation and schematics
+- Troubleshooting common issues</p></li>
+</ol>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../State%20Machines/introduction.html" class="btn btn-neutral float-left" title="State Machines" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Ho Thien Ai.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

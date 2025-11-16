@@ -1,0 +1,248 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Embedded C &mdash; Embedded C Programming  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="State Machines" href="../State%20Machines/introduction.html" />
+    <link rel="prev" title="C Language" href="../C%20Language/introduction.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Embedded C Programming
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../C%20Language/introduction.html">C Language</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Embedded C</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#topics-to-be-covered">Topics to be covered</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../State%20Machines/introduction.html">State Machines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Developement%20Boards/introduction.html">Development Boards</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Embedded C Programming</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Embedded C</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/Embedded C/introduction.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="embedded-c">
+<h1>Embedded C<a class="headerlink" href="#embedded-c" title="Link to this heading"></a></h1>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
+<p>This section covers Embedded C programming concepts, focusing on hardware interaction,
+microcontroller programming, and real-time embedded systems development. It bridges the
+gap between standard C programming and hardware-specific implementation.</p>
+</section>
+<section id="topics-to-be-covered">
+<h2>Topics to be covered<a class="headerlink" href="#topics-to-be-covered" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p><strong>Introduction to Embedded Systems</strong>
+- What is an embedded system?
+- Embedded systems vs general-purpose systems
+- Real-time systems (hard real-time vs soft real-time)
+- Embedded system architecture</p></li>
+<li><p><strong>Microcontroller Basics</strong>
+- Microcontroller vs microprocessor
+- CPU, memory (RAM, ROM, Flash)
+- Peripherals and I/O ports
+- Clock systems and timing</p></li>
+<li><p><strong>Memory Architecture</strong>
+- Memory map and address space
+- Flash memory (program memory)
+- RAM (data memory)
+- EEPROM
+- Memory-mapped I/O
+- Harvard vs Von Neumann architecture</p></li>
+<li><p><strong>Register-Level Programming</strong>
+- Special Function Registers (SFRs)
+- Control registers
+- Status registers
+- Data direction registers
+- Reading and writing to registers</p></li>
+<li><p><strong>Data Types in Embedded C</strong>
+- Standard integer types (uint8_t, uint16_t, uint32_t)
+- Fixed-width integer types
+- Volatile keyword
+- Const keyword
+- Static keyword in embedded context</p></li>
+<li><p><strong>Bit Manipulation</strong>
+- Setting individual bits
+- Clearing individual bits
+- Toggling bits
+- Checking bit status
+- Bit masking techniques
+- Bit fields and unions</p></li>
+<li><p><strong>GPIO (General Purpose Input/Output)</strong>
+- Configuring pins as input/output
+- Reading digital inputs
+- Writing digital outputs
+- Pull-up and pull-down resistors
+- Pin multiplexing</p></li>
+<li><p><strong>Interrupts</strong>
+- Interrupt concept and handling
+- Interrupt Service Routines (ISR)
+- Interrupt vectors
+- Interrupt priority and nesting
+- Enabling and disabling interrupts
+- External vs internal interrupts</p></li>
+<li><p><strong>Timers and Counters</strong>
+- Timer basics and modes
+- Timer configuration
+- Timer interrupts
+- Generating delays
+- PWM (Pulse Width Modulation)
+- Watchdog timer</p></li>
+<li><p><strong>ADC (Analog-to-Digital Converter)</strong>
+- ADC principles and resolution
+- ADC modes (single conversion, continuous)
+- Reference voltage
+- Sampling and conversion time
+- Reading analog sensors</p></li>
+<li><p><strong>Communication Protocols</strong>
+- UART/USART (Serial communication)
+- SPI (Serial Peripheral Interface)
+- I2C (Inter-Integrated Circuit)
+- CAN (Controller Area Network)
+- Communication protocol selection</p></li>
+<li><p><strong>Power Management</strong>
+- Sleep modes
+- Power-down modes
+- Clock gating
+- Peripheral power control
+- Low-power design techniques</p></li>
+<li><p><strong>Compiler-Specific Features</strong>
+- Compiler directives and attributes
+- Inline assembly
+- Optimization levels
+- Code sections and linking
+- Startup code</p></li>
+<li><p><strong>Memory Optimization</strong>
+- Code size optimization
+- RAM usage optimization
+- Const data in flash
+- Function inlining
+- Dead code elimination</p></li>
+<li><p><strong>Direct Memory Access (DMA)</strong>
+- DMA concepts
+- DMA channels and configuration
+- DMA transfer modes
+- DMA vs CPU transfer</p></li>
+<li><p><strong>Real-Time Operating Systems (RTOS) Basics</strong>
+- Task/thread management
+- Scheduling algorithms
+- Semaphores and mutexes
+- Message queues
+- When to use RTOS</p></li>
+<li><p><strong>Hardware Abstraction Layer (HAL)</strong>
+- HAL concept and benefits
+- Register abstraction
+- Peripheral drivers
+- Portability considerations</p></li>
+<li><p><strong>Debugging Embedded Systems</strong>
+- JTAG and SWD interfaces
+- Breakpoints and watchpoints
+- Real-time debugging
+- Printf debugging (UART)
+- Logic analyzers and oscilloscopes</p></li>
+<li><p><strong>Boot Process and Linker Scripts</strong>
+- Reset vector and startup sequence
+- Memory initialization
+- Stack and heap setup
+- Linker script basics
+- Bootloaders</p></li>
+<li><p><strong>Best Practices for Embedded C</strong>
+- Code portability
+- Error handling
+- Resource constraints awareness
+- Deterministic behavior
+- Testing and validation
+- Documentation standards</p></li>
+</ol>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../C%20Language/introduction.html" class="btn btn-neutral float-left" title="C Language" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../State%20Machines/introduction.html" class="btn btn-neutral float-right" title="State Machines" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Ho Thien Ai.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

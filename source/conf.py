@@ -6,7 +6,7 @@
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-project = 'Learning Embedded C'
+project = 'Embedded C Programming'
 copyright = '2025, Ho Thien Ai'
 author = 'Ho Thien Ai'
 

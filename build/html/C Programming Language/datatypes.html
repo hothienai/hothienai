@@ -1,0 +1,689 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Data Types in C &mdash; Embedded C Programming  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Variables in C" href="variables.html" />
+    <link rel="prev" title="Introduction" href="introduction.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Embedded C Programming
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">C Programming Language</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Data Types in C</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#basic-data-types">Basic Data Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#integer-data-types">Integer Data Types</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#char">char</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#int">int</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#short">short</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#long">long</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#long-long">long long</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#floating-point-data-types">Floating-Point Data Types</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#float">float</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#double">double</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#long-double">long double</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#void-type">Void Type</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#type-modifiers">Type Modifiers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#signed">signed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#unsigned">unsigned</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#short-and-long">short and long</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#size-of-data-types">Size of Data Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#type-ranges-summary">Type Ranges Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#type-conversion">Type Conversion</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#implicit-conversion-type-coercion">Implicit Conversion (Type Coercion)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#explicit-conversion-type-casting">Explicit Conversion (Type Casting)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#best-practices">Best Practices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#common-pitfalls">Common Pitfalls</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#practice-examples">Practice Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#example-1-variable-declaration-and-initialization">Example 1: Variable Declaration and Initialization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#example-2-type-conversion">Example 2: Type Conversion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#example-3-checking-type-sizes-and-limits">Example 3: Checking Type Sizes and Limits</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#summary">Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="variables.html">Variables in C</a></li>
+<li class="toctree-l1"><a class="reference internal" href="constants.html">Constants in C</a></li>
+<li class="toctree-l1"><a class="reference internal" href="static-variables.html">Static Variables in C</a></li>
+<li class="toctree-l1"><a class="reference internal" href="volatile-variables.html">Volatile Variables in C</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Embedded C</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../Embedded%20C/introduction.html">Embedded C</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">State Machines</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../State%20Machines/introduction.html">State Machines</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development Boards</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../Development%20Boards/introduction.html">Development Boards</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Embedded C Programming</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Data Types in C</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/C Programming Language/datatypes.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="data-types-in-c">
+<h1>Data Types in C<a class="headerlink" href="#data-types-in-c" title="Link to this heading"></a></h1>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
+<p>Data types are fundamental building blocks in C programming that define the type of data
+a variable can hold and the operations that can be performed on it. Understanding data types
+is crucial for efficient memory usage, proper data manipulation, and avoiding common programming errors.</p>
+<p>In C, every variable must be declared with a specific data type before it can be used. The data type
+determines:</p>
+<ul class="simple">
+<li><p>The amount of memory allocated for the variable</p></li>
+<li><p>The range of values it can store</p></li>
+<li><p>The operations that can be performed on it</p></li>
+<li><p>How the data is interpreted by the compiler</p></li>
+</ul>
+</section>
+<section id="basic-data-types">
+<h2>Basic Data Types<a class="headerlink" href="#basic-data-types" title="Link to this heading"></a></h2>
+<p>C provides several basic (primitive) data types that can be categorized into:</p>
+<ol class="arabic simple">
+<li><p>Integer types</p></li>
+<li><p>Floating-point types</p></li>
+<li><p>Character type</p></li>
+<li><p>Void type</p></li>
+</ol>
+</section>
+<section id="integer-data-types">
+<h2>Integer Data Types<a class="headerlink" href="#integer-data-types" title="Link to this heading"></a></h2>
+<p>Integer types store whole numbers (positive, negative, or zero) without decimal points.</p>
+<section id="char">
+<h3>char<a class="headerlink" href="#char" title="Link to this heading"></a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">char</span></code> type is primarily used to store single characters but is technically an integer type.</p>
+<p><strong>Size:</strong> 1 byte (8 bits)</p>
+<p><strong>Range:</strong>
+- Signed: -128 to 127
+- Unsigned: 0 to 255</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">char</span><span class="w"> </span><span class="n">letter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sc">&#39;A&#39;</span><span class="p">;</span><span class="w">           </span><span class="c1">// Character literal</span>
+<span class="kt">char</span><span class="w"> </span><span class="n">digit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sc">&#39;9&#39;</span><span class="p">;</span><span class="w">            </span><span class="c1">// Character digit</span>
+<span class="kt">signed</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="n">temp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-50</span><span class="p">;</span><span class="w">      </span><span class="c1">// Explicitly signed</span>
+<span class="kt">unsigned</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="n">byte</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">200</span><span class="p">;</span><span class="w">    </span><span class="c1">// Unsigned char</span>
+</pre></div>
+</div>
+<p><strong>Key Points:</strong></p>
+<ul class="simple">
+<li><p>Characters are stored as ASCII values</p></li>
+<li><p>Can perform arithmetic operations on char</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'A'</span></code> has ASCII value 65, <code class="docutils literal notranslate"><span class="pre">'a'</span></code> has value 97</p></li>
+</ul>
+</section>
+<section id="int">
+<h3>int<a class="headerlink" href="#int" title="Link to this heading"></a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">int</span></code> type is the most commonly used integer type.</p>
+<p><strong>Size:</strong> Typically 4 bytes (32 bits) on modern systems, but can be 2 bytes on some platforms</p>
+<p><strong>Range (32-bit):</strong>
+- Signed: -2,147,483,648 to 2,147,483,647
+- Unsigned: 0 to 4,294,967,295</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">age</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">25</span><span class="p">;</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">temperature</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-10</span><span class="p">;</span>
+<span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1000</span><span class="p">;</span>
+
+<span class="c1">// Using integer suffixes</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">large</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">100000</span><span class="p">;</span>
+<span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">uid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">50000U</span><span class="p">;</span><span class="w">  </span><span class="c1">// U suffix for unsigned</span>
+</pre></div>
+</div>
+<p><strong>Key Points:</strong></p>
+<ul class="simple">
+<li><p>Default integer type when no type is specified</p></li>
+<li><p>Signed by default (can be negative)</p></li>
+<li><p>Size depends on the platform (16-bit, 32-bit, or 64-bit)</p></li>
+</ul>
+</section>
+<section id="short">
+<h3>short<a class="headerlink" href="#short" title="Link to this heading"></a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">short</span></code> type uses less memory than <code class="docutils literal notranslate"><span class="pre">int</span></code>.</p>
+<p><strong>Size:</strong> 2 bytes (16 bits)</p>
+<p><strong>Range:</strong>
+- Signed: -32,768 to 32,767
+- Unsigned: 0 to 65,535</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">short</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1000</span><span class="p">;</span>
+<span class="kt">short</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">si</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2000</span><span class="p">;</span><span class="w">        </span><span class="c1">// &#39;int&#39; is optional</span>
+<span class="kt">unsigned</span><span class="w"> </span><span class="kt">short</span><span class="w"> </span><span class="n">us</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">50000</span><span class="p">;</span>
+</pre></div>
+</div>
+<p><strong>Key Points:</strong></p>
+<ul class="simple">
+<li><p>More memory-efficient for small values</p></li>
+<li><p>Keyword <code class="docutils literal notranslate"><span class="pre">int</span></code> can be omitted (<code class="docutils literal notranslate"><span class="pre">short</span></code> is equivalent to <code class="docutils literal notranslate"><span class="pre">short</span> <span class="pre">int</span></code>)</p></li>
+</ul>
+</section>
+<section id="long">
+<h3>long<a class="headerlink" href="#long" title="Link to this heading"></a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">long</span></code> type provides extended range for larger values.</p>
+<p><strong>Size:</strong>
+- Typically 4 bytes on 32-bit systems
+- 8 bytes on 64-bit systems (on many platforms)</p>
+<p><strong>Range (32-bit):</strong>
+- Signed: -2,147,483,648 to 2,147,483,647
+- Unsigned: 0 to 4,294,967,295</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">long</span><span class="w"> </span><span class="n">population</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">7800000000L</span><span class="p">;</span><span class="w">  </span><span class="c1">// L suffix for long</span>
+<span class="kt">long</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">distance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">384400L</span><span class="p">;</span>
+<span class="kt">unsigned</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">ul</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4000000000UL</span><span class="p">;</span>
+</pre></div>
+</div>
+</section>
+<section id="long-long">
+<h3>long long<a class="headerlink" href="#long-long" title="Link to this heading"></a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">long</span> <span class="pre">long</span></code> type (introduced in C99) provides even larger range.</p>
+<p><strong>Size:</strong> 8 bytes (64 bits)</p>
+<p><strong>Range:</strong>
+- Signed: -9,223,372,036,854,775,808 to 9,223,372,036,854,775,807
+- Unsigned: 0 to 18,446,744,073,709,551,615</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">long</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">bignum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">9000000000000L</span><span class="n">L</span><span class="p">;</span><span class="w">  </span><span class="c1">// LL suffix</span>
+<span class="kt">unsigned</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">huge</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">18000000000000000ULL</span><span class="p">;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="floating-point-data-types">
+<h2>Floating-Point Data Types<a class="headerlink" href="#floating-point-data-types" title="Link to this heading"></a></h2>
+<p>Floating-point types store numbers with decimal points and exponential values.</p>
+<section id="float">
+<h3>float<a class="headerlink" href="#float" title="Link to this heading"></a></h3>
+<p>Single-precision floating-point type.</p>
+<p><strong>Size:</strong> 4 bytes (32 bits)</p>
+<p><strong>Precision:</strong> ~6-7 decimal digits</p>
+<p><strong>Range:</strong> Approximately ±3.4E-38 to ±3.4E+38</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">float</span><span class="w"> </span><span class="n">pi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">3.14159f</span><span class="p">;</span><span class="w">         </span><span class="c1">// f suffix for float</span>
+<span class="kt">float</span><span class="w"> </span><span class="n">temp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">36.6f</span><span class="p">;</span>
+<span class="kt">float</span><span class="w"> </span><span class="n">scientific</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1.23e-4f</span><span class="p">;</span><span class="w"> </span><span class="c1">// Scientific notation</span>
+</pre></div>
+</div>
+<p><strong>Key Points:</strong></p>
+<ul class="simple">
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">f</span></code> or <code class="docutils literal notranslate"><span class="pre">F</span></code> suffix to specify float literals</p></li>
+<li><p>Without suffix, decimal literals are treated as <code class="docutils literal notranslate"><span class="pre">double</span></code></p></li>
+<li><p>Less precise but uses less memory than <code class="docutils literal notranslate"><span class="pre">double</span></code></p></li>
+</ul>
+</section>
+<section id="double">
+<h3>double<a class="headerlink" href="#double" title="Link to this heading"></a></h3>
+<p>Double-precision floating-point type.</p>
+<p><strong>Size:</strong> 8 bytes (64 bits)</p>
+<p><strong>Precision:</strong> ~15-16 decimal digits</p>
+<p><strong>Range:</strong> Approximately ±1.7E-308 to ±1.7E+308</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">double</span><span class="w"> </span><span class="n">precise_pi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">3.141592653589793</span><span class="p">;</span>
+<span class="kt">double</span><span class="w"> </span><span class="n">distance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">384400.0</span><span class="p">;</span>
+<span class="kt">double</span><span class="w"> </span><span class="n">small</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">2.998e8</span><span class="p">;</span><span class="w">      </span><span class="c1">// Speed of light in m/s</span>
+</pre></div>
+</div>
+<p><strong>Key Points:</strong></p>
+<ul class="simple">
+<li><p>Default type for floating-point literals</p></li>
+<li><p>More precise than <code class="docutils literal notranslate"><span class="pre">float</span></code> but uses more memory</p></li>
+<li><p>Preferred for scientific calculations</p></li>
+</ul>
+</section>
+<section id="long-double">
+<h3>long double<a class="headerlink" href="#long-double" title="Link to this heading"></a></h3>
+<p>Extended-precision floating-point type.</p>
+<p><strong>Size:</strong> Platform-dependent (typically 10, 12, or 16 bytes)</p>
+<p><strong>Precision:</strong> Platform-dependent (typically 18-20 decimal digits)</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">long</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">very_precise</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">3.14159265358979323846L</span><span class="p">;</span>
+</pre></div>
+</div>
+<p><strong>Key Points:</strong></p>
+<ul class="simple">
+<li><p>Provides highest precision</p></li>
+<li><p>Implementation varies by compiler and platform</p></li>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">L</span></code> suffix for literals</p></li>
+</ul>
+</section>
+</section>
+<section id="void-type">
+<h2>Void Type<a class="headerlink" href="#void-type" title="Link to this heading"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">void</span></code> type represents the absence of a type.</p>
+<p><strong>Common Uses:</strong></p>
+<ol class="arabic simple">
+<li><p><strong>Function return type</strong> - indicates function returns no value</p></li>
+<li><p><strong>Function parameters</strong> - indicates function takes no parameters</p></li>
+<li><p><strong>Generic pointers</strong> - <code class="docutils literal notranslate"><span class="pre">void*</span></code> can point to any data type</p></li>
+</ol>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">printMessage</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Hello, World!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="c1">// No return statement needed</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">generic_pointer</span><span class="p">;</span><span class="w">  </span><span class="c1">// Can point to any type</span>
+</pre></div>
+</div>
+</section>
+<section id="type-modifiers">
+<h2>Type Modifiers<a class="headerlink" href="#type-modifiers" title="Link to this heading"></a></h2>
+<p>Type modifiers alter the properties of basic data types:</p>
+<section id="signed">
+<h3>signed<a class="headerlink" href="#signed" title="Link to this heading"></a></h3>
+<p>Explicitly specifies that a type can hold negative values (default for <code class="docutils literal notranslate"><span class="pre">int</span></code>).</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">signed</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-100</span><span class="p">;</span>
+<span class="kt">signed</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="n">sc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-50</span><span class="p">;</span>
+</pre></div>
+</div>
+</section>
+<section id="unsigned">
+<h3>unsigned<a class="headerlink" href="#unsigned" title="Link to this heading"></a></h3>
+<p>Specifies that a type can only hold non-negative values, effectively doubling the positive range.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4000000000U</span><span class="p">;</span>
+<span class="kt">unsigned</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="n">byte</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">255</span><span class="p">;</span>
+</pre></div>
+</div>
+</section>
+<section id="short-and-long">
+<h3>short and long<a class="headerlink" href="#short-and-long" title="Link to this heading"></a></h3>
+<p>Modify the size and range of integer types.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">short</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">small</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">100</span><span class="p">;</span>
+<span class="kt">long</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">large</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1000000L</span><span class="p">;</span>
+<span class="kt">long</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">huge</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">9000000000000L</span><span class="n">L</span><span class="p">;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="size-of-data-types">
+<h2>Size of Data Types<a class="headerlink" href="#size-of-data-types" title="Link to this heading"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">sizeof</span></code> operator returns the size in bytes of a data type or variable.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Size of char: %zu bytes</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="kt">char</span><span class="p">));</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Size of int: %zu bytes</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">));</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Size of short: %zu bytes</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="kt">short</span><span class="p">));</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Size of long: %zu bytes</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="kt">long</span><span class="p">));</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Size of long long: %zu bytes</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="kt">long</span><span class="w"> </span><span class="kt">long</span><span class="p">));</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Size of float: %zu bytes</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="kt">float</span><span class="p">));</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Size of double: %zu bytes</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="kt">double</span><span class="p">));</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Size of long double: %zu bytes</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="kt">long</span><span class="w"> </span><span class="kt">double</span><span class="p">));</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Output (typical on 64-bit system):</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Size of char: 1 bytes
+Size of int: 4 bytes
+Size of short: 2 bytes
+Size of long: 8 bytes
+Size of long long: 8 bytes
+Size of float: 4 bytes
+Size of double: 8 bytes
+Size of long double: 16 bytes
+</pre></div>
+</div>
+</section>
+<section id="type-ranges-summary">
+<h2>Type Ranges Summary<a class="headerlink" href="#type-ranges-summary" title="Link to this heading"></a></h2>
+<table class="docutils align-default" id="id1">
+<caption><span class="caption-text">Integer Type Ranges</span><a class="headerlink" href="#id1" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 15.0%" />
+<col style="width: 30.0%" />
+<col style="width: 30.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Type</p></th>
+<th class="head"><p>Size</p></th>
+<th class="head"><p>Signed Range</p></th>
+<th class="head"><p>Unsigned Range</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>char</p></td>
+<td><p>1 byte</p></td>
+<td><p>-128 to 127</p></td>
+<td><p>0 to 255</p></td>
+</tr>
+<tr class="row-odd"><td><p>short</p></td>
+<td><p>2 bytes</p></td>
+<td><p>-32,768 to 32,767</p></td>
+<td><p>0 to 65,535</p></td>
+</tr>
+<tr class="row-even"><td><p>int</p></td>
+<td><p>4 bytes</p></td>
+<td><p>-2,147,483,648 to 2,147,483,647</p></td>
+<td><p>0 to 4,294,967,295</p></td>
+</tr>
+<tr class="row-odd"><td><p>long</p></td>
+<td><p>4/8 bytes</p></td>
+<td><p>Platform-dependent</p></td>
+<td><p>Platform-dependent</p></td>
+</tr>
+<tr class="row-even"><td><p>long long</p></td>
+<td><p>8 bytes</p></td>
+<td><p>-9,223,372,036,854,775,808 to 9,223,372,036,854,775,807</p></td>
+<td><p>0 to 18,446,744,073,709,551,615</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="type-conversion">
+<h2>Type Conversion<a class="headerlink" href="#type-conversion" title="Link to this heading"></a></h2>
+<section id="implicit-conversion-type-coercion">
+<h3>Implicit Conversion (Type Coercion)<a class="headerlink" href="#implicit-conversion-type-coercion" title="Link to this heading"></a></h3>
+<p>C automatically converts between compatible types in certain situations.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
+<span class="kt">float</span><span class="w"> </span><span class="n">f</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w">        </span><span class="c1">// int to float (implicit)</span>
+
+<span class="kt">float</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">3.14f</span><span class="p">;</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">x</span><span class="p">;</span><span class="w">          </span><span class="c1">// float to int (loses decimal part)</span>
+
+<span class="kt">char</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sc">&#39;A&#39;</span><span class="p">;</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">ascii</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">c</span><span class="p">;</span><span class="w">      </span><span class="c1">// char to int</span>
+</pre></div>
+</div>
+<p><strong>Rules:</strong></p>
+<ul class="simple">
+<li><p>Smaller types promoted to larger types</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">float</span></code> promoted to <code class="docutils literal notranslate"><span class="pre">double</span></code> in expressions</p></li>
+<li><p>Integer types promoted to <code class="docutils literal notranslate"><span class="pre">float</span></code>/<code class="docutils literal notranslate"><span class="pre">double</span></code> when mixed</p></li>
+<li><p>Decimal part truncated when converting float to int</p></li>
+</ul>
+</section>
+<section id="explicit-conversion-type-casting">
+<h3>Explicit Conversion (Type Casting)<a class="headerlink" href="#explicit-conversion-type-casting" title="Link to this heading"></a></h3>
+<p>Use cast operator to explicitly convert types.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">float</span><span class="w"> </span><span class="n">pi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">3.14159f</span><span class="p">;</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">truncated</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">pi</span><span class="p">;</span><span class="w">        </span><span class="c1">// 3</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
+<span class="kt">float</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">float</span><span class="p">)</span><span class="n">a</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">b</span><span class="p">;</span><span class="w">    </span><span class="c1">// 2.5, not 2</span>
+
+<span class="kt">double</span><span class="w"> </span><span class="n">d</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">3.99</span><span class="p">;</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">d</span><span class="p">;</span><span class="w">                 </span><span class="c1">// 3</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="best-practices">
+<h2>Best Practices<a class="headerlink" href="#best-practices" title="Link to this heading"></a></h2>
+<ol class="arabic">
+<li><p><strong>Choose appropriate type for your data</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">age</span><span class="p">;</span><span class="w">           </span><span class="c1">// Age is never negative</span>
+<span class="kt">float</span><span class="w"> </span><span class="n">temperature</span><span class="p">;</span><span class="w">          </span><span class="c1">// Decimal values needed</span>
+<span class="kt">char</span><span class="w"> </span><span class="n">grade</span><span class="p">;</span><span class="w">                 </span><span class="c1">// Single character</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Use fixed-width types for portability</strong> (from <code class="docutils literal notranslate"><span class="pre">&lt;stdint.h&gt;</span></code>)</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdint.h&gt;</span>
+
+<span class="kt">uint8_t</span><span class="w">  </span><span class="n">byte</span><span class="p">;</span><span class="w">             </span><span class="c1">// Exactly 8 bits</span>
+<span class="kt">int16_t</span><span class="w">  </span><span class="n">word</span><span class="p">;</span><span class="w">             </span><span class="c1">// Exactly 16 bits</span>
+<span class="kt">uint32_t</span><span class="w"> </span><span class="n">dword</span><span class="p">;</span><span class="w">            </span><span class="c1">// Exactly 32 bits</span>
+<span class="kt">int64_t</span><span class="w">  </span><span class="n">qword</span><span class="p">;</span><span class="w">            </span><span class="c1">// Exactly 64 bits</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Be aware of type limits</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;limits.h&gt;</span>
+
+<span class="n">printf</span><span class="p">(</span><span class="s">&quot;INT_MAX: %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">INT_MAX</span><span class="p">);</span>
+<span class="n">printf</span><span class="p">(</span><span class="s">&quot;INT_MIN: %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">INT_MIN</span><span class="p">);</span>
+<span class="n">printf</span><span class="p">(</span><span class="s">&quot;UINT_MAX: %u</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">UINT_MAX</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Avoid implicit conversions that lose precision</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">double</span><span class="w"> </span><span class="n">precise</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">3.14159265358979</span><span class="p">;</span>
+<span class="kt">float</span><span class="w"> </span><span class="n">less_precise</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">precise</span><span class="p">;</span><span class="w">     </span><span class="c1">// Loses precision</span>
+
+<span class="kt">long</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">big</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">9000000000L</span><span class="n">L</span><span class="p">;</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">small</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">big</span><span class="p">;</span><span class="w">                  </span><span class="c1">// Potential data loss</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Use sizeof for portable code</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// Don&#39;t assume int is 4 bytes</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">arr</span><span class="p">[</span><span class="mi">100</span><span class="p">];</span>
+<span class="kt">size_t</span><span class="w"> </span><span class="n">arr_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">arr</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="common-pitfalls">
+<h2>Common Pitfalls<a class="headerlink" href="#common-pitfalls" title="Link to this heading"></a></h2>
+<ol class="arabic">
+<li><p><strong>Integer Overflow</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">255</span><span class="p">;</span>
+<span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w">                 </span><span class="c1">// Wraps to 0</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Unexpected Type Promotion</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">255</span><span class="p">;</span>
+<span class="kt">unsigned</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">b</span><span class="p">;</span><span class="w">        </span><span class="c1">// 256, promoted to int</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Division Truncation</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">b</span><span class="p">;</span><span class="w">        </span><span class="c1">// 2, not 2.5</span>
+<span class="kt">float</span><span class="w"> </span><span class="n">correct</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">float</span><span class="p">)</span><span class="n">a</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">b</span><span class="p">;</span><span class="w">  </span><span class="c1">// 2.5</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Comparing Signed and Unsigned</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">signed_val</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span>
+<span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">unsigned_val</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">signed_val</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">unsigned_val</span><span class="p">)</span><span class="w">  </span><span class="c1">// May not work as expected!</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Unexpected behavior</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Float Precision Issues</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">float</span><span class="w"> </span><span class="n">f1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.1f</span><span class="p">;</span>
+<span class="kt">float</span><span class="w"> </span><span class="n">f2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.2f</span><span class="p">;</span>
+<span class="kt">float</span><span class="w"> </span><span class="n">sum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">f1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">f2</span><span class="p">;</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">sum</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mf">0.3f</span><span class="p">)</span><span class="w">           </span><span class="c1">// May be false due to precision!</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Equal</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="practice-examples">
+<h2>Practice Examples<a class="headerlink" href="#practice-examples" title="Link to this heading"></a></h2>
+<section id="example-1-variable-declaration-and-initialization">
+<h3>Example 1: Variable Declaration and Initialization<a class="headerlink" href="#example-1-variable-declaration-and-initialization" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// Integer types</span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">letter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sc">&#39;X&#39;</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">short</span><span class="w"> </span><span class="n">small_num</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1000</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">42</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">long</span><span class="w"> </span><span class="n">population</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">7800000000L</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">long</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">huge</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">9223372036854775807L</span><span class="n">L</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">// Floating-point types</span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">temperature</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">36.5f</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">precise_value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">3.141592653589793</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">// Display values</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Character: %c</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">letter</span><span class="p">);</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Small number: %hd</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">small_num</span><span class="p">);</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Count: %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">count</span><span class="p">);</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Population: %ld</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">population</span><span class="p">);</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Huge: %lld</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">huge</span><span class="p">);</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Temperature: %.1f</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">temperature</span><span class="p">);</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Precise: %.15f</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">precise_value</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="example-2-type-conversion">
+<h3>Example 2: Type Conversion<a class="headerlink" href="#example-2-type-conversion" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">num</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">result</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">// Integer division</span>
+<span class="w">    </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">num</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w">          </span><span class="c1">// 2.0 (truncated)</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Integer division: %.1f</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">result</span><span class="p">);</span>
+
+<span class="w">    </span><span class="c1">// Float division</span>
+<span class="w">    </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">float</span><span class="p">)</span><span class="n">num</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w">   </span><span class="c1">// 2.5</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Float division: %.1f</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">result</span><span class="p">);</span>
+
+<span class="w">    </span><span class="c1">// Character to integer</span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">ch</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sc">&#39;A&#39;</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">ascii</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ch</span><span class="p">;</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;ASCII of %c: %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">ch</span><span class="p">,</span><span class="w"> </span><span class="n">ascii</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="example-3-checking-type-sizes-and-limits">
+<h3>Example 3: Checking Type Sizes and Limits<a class="headerlink" href="#example-3-checking-type-sizes-and-limits" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;limits.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;float.h&gt;</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;=== Integer Limits ===</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;CHAR_MIN: %d, CHAR_MAX: %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">CHAR_MIN</span><span class="p">,</span><span class="w"> </span><span class="n">CHAR_MAX</span><span class="p">);</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;SHRT_MIN: %d, SHRT_MAX: %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">SHRT_MIN</span><span class="p">,</span><span class="w"> </span><span class="n">SHRT_MAX</span><span class="p">);</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;INT_MIN: %d, INT_MAX: %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">INT_MIN</span><span class="p">,</span><span class="w"> </span><span class="n">INT_MAX</span><span class="p">);</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;LONG_MIN: %ld, LONG_MAX: %ld</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">LONG_MIN</span><span class="p">,</span><span class="w"> </span><span class="n">LONG_MAX</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">=== Unsigned Limits ===</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;UCHAR_MAX: %u</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">UCHAR_MAX</span><span class="p">);</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;USHRT_MAX: %u</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">USHRT_MAX</span><span class="p">);</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;UINT_MAX: %u</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">UINT_MAX</span><span class="p">);</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;ULONG_MAX: %lu</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">ULONG_MAX</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">=== Float Limits ===</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;FLT_MIN: %e, FLT_MAX: %e</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">FLT_MIN</span><span class="p">,</span><span class="w"> </span><span class="n">FLT_MAX</span><span class="p">);</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;DBL_MIN: %e, DBL_MAX: %e</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">DBL_MIN</span><span class="p">,</span><span class="w"> </span><span class="n">DBL_MAX</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>C provides several basic data types: integers, floating-point, character, and void</p></li>
+<li><p>Integer types: <code class="docutils literal notranslate"><span class="pre">char</span></code>, <code class="docutils literal notranslate"><span class="pre">short</span></code>, <code class="docutils literal notranslate"><span class="pre">int</span></code>, <code class="docutils literal notranslate"><span class="pre">long</span></code>, <code class="docutils literal notranslate"><span class="pre">long</span> <span class="pre">long</span></code></p></li>
+<li><p>Floating-point types: <code class="docutils literal notranslate"><span class="pre">float</span></code>, <code class="docutils literal notranslate"><span class="pre">double</span></code>, <code class="docutils literal notranslate"><span class="pre">long</span> <span class="pre">double</span></code></p></li>
+<li><p>Type modifiers: <code class="docutils literal notranslate"><span class="pre">signed</span></code>, <code class="docutils literal notranslate"><span class="pre">unsigned</span></code>, <code class="docutils literal notranslate"><span class="pre">short</span></code>, <code class="docutils literal notranslate"><span class="pre">long</span></code></p></li>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">sizeof</span></code> to determine type sizes</p></li>
+<li><p>Be careful with type conversions to avoid data loss</p></li>
+<li><p>Consider using fixed-width types (<code class="docutils literal notranslate"><span class="pre">int32_t</span></code>, etc.) for portability</p></li>
+<li><p>Always be aware of type ranges and limits to avoid overflow/underflow</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="introduction.html" class="btn btn-neutral float-left" title="Introduction" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="variables.html" class="btn btn-neutral float-right" title="Variables in C" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Ho Thien Ai.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

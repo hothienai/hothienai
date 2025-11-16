@@ -1,0 +1,680 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Volatile Variables in C &mdash; Embedded C Programming  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Embedded C Programming
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Embedded C</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../Embedded%20C/introduction.html">Embedded C</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">State Machines</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../State%20Machines/introduction.html">State Machines</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Embedded C Programming</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Volatile Variables in C</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/C Progamming Language/volatile-variables.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="volatile-variables-in-c">
+<h1>Volatile Variables in C<a class="headerlink" href="#volatile-variables-in-c" title="Link to this heading"></a></h1>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">volatile</span></code> keyword is a type qualifier in C that tells the compiler that a variable’s
+value may change at any time without any action being taken by the code the compiler finds
+nearby. This prevents the compiler from applying certain optimizations that might produce
+incorrect behavior when dealing with such variables.</p>
+<p><strong>Key Point:</strong> <code class="docutils literal notranslate"><span class="pre">volatile</span></code> is about preventing unwanted compiler optimizations, not about
+thread safety or atomic operations.</p>
+</section>
+<section id="what-does-volatile-mean">
+<h2>What Does volatile Mean?<a class="headerlink" href="#what-does-volatile-mean" title="Link to this heading"></a></h2>
+<p>When you declare a variable as <code class="docutils literal notranslate"><span class="pre">volatile</span></code>, you’re instructing the compiler:</p>
+<ol class="arabic simple">
+<li><p><strong>Don’t optimize away reads</strong> - Always read the variable from memory, not from a cached register</p></li>
+<li><p><strong>Don’t optimize away writes</strong> - Always write the variable to memory, even if it appears unused</p></li>
+<li><p><strong>Don’t reorder operations</strong> - Maintain the order of volatile accesses as written in code</p></li>
+</ol>
+<section id="without-volatile">
+<h3>Without volatile<a class="headerlink" href="#without-volatile" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">flag</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">flag</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// Compiler might optimize this to an infinite loop</span>
+<span class="w">    </span><span class="c1">// by reading flag only once</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="with-volatile">
+<h3>With volatile<a class="headerlink" href="#with-volatile" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">volatile</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">flag</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">flag</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// Compiler must read flag from memory each iteration</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="syntax">
+<h2>Syntax<a class="headerlink" href="#syntax" title="Link to this heading"></a></h2>
+<section id="basic-declaration">
+<h3>Basic Declaration<a class="headerlink" href="#basic-declaration" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">volatile</span><span class="w"> </span><span class="n">data_type</span><span class="w"> </span><span class="n">variable_name</span><span class="p">;</span>
+</pre></div>
+</div>
+</section>
+<section id="examples">
+<h3>Examples<a class="headerlink" href="#examples" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">volatile</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">sensor_value</span><span class="p">;</span>
+<span class="k">volatile</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="n">status_register</span><span class="p">;</span>
+<span class="k">volatile</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">temperature</span><span class="p">;</span>
+<span class="k">volatile</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">timer_counter</span><span class="p">;</span>
+</pre></div>
+</div>
+</section>
+<section id="volatile-pointers">
+<h3>Volatile Pointers<a class="headerlink" href="#volatile-pointers" title="Link to this heading"></a></h3>
+<p>There are three variations when combining <code class="docutils literal notranslate"><span class="pre">volatile</span></code> with pointers:</p>
+<ol class="arabic">
+<li><p><strong>Pointer to volatile data:</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">volatile</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">ptr</span><span class="p">;</span><span class="w">        </span><span class="c1">// Pointer to volatile int</span>
+<span class="c1">// Can change pointer, data is volatile</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Volatile pointer to data:</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="k">volatile</span><span class="w"> </span><span class="n">ptr</span><span class="p">;</span><span class="w">        </span><span class="c1">// Volatile pointer to int</span>
+<span class="c1">// Cannot move pointer, data is not volatile</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Volatile pointer to volatile data:</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">volatile</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="k">volatile</span><span class="w"> </span><span class="n">ptr</span><span class="p">;</span><span class="w">  </span><span class="c1">// Both pointer and data are volatile</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+</section>
+<section id="when-to-use-volatile">
+<h2>When to Use volatile<a class="headerlink" href="#when-to-use-volatile" title="Link to this heading"></a></h2>
+<section id="memory-mapped-i-o-registers">
+<h3>1. Memory-Mapped I/O Registers<a class="headerlink" href="#memory-mapped-i-o-registers" title="Link to this heading"></a></h3>
+<p>Hardware registers mapped into the address space of the processor.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// ARM Cortex-M microcontroller example</span>
+<span class="cp">#define GPIO_ODR  (*((volatile uint32_t *)0x40020014))</span>
+
+<span class="k">volatile</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="o">*</span><span class="n">gpio_output</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="k">volatile</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="mh">0x40020014</span><span class="p">;</span>
+<span class="o">*</span><span class="n">gpio_output</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0xFF</span><span class="p">;</span><span class="w">         </span><span class="c1">// Set GPIO pins</span>
+</pre></div>
+</div>
+</section>
+<section id="variables-modified-by-interrupt-service-routines-isr">
+<h3>2. Variables Modified by Interrupt Service Routines (ISR)<a class="headerlink" href="#variables-modified-by-interrupt-service-routines-isr" title="Link to this heading"></a></h3>
+<p>Variables shared between main code and ISR must be volatile.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">volatile</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">interrupt_flag</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">ISR_Handler</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">interrupt_flag</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w">      </span><span class="c1">// Set by interrupt</span>
+<span class="p">}</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">interrupt_flag</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Wait for interrupt</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="c1">// Process interrupt</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="multi-threaded-applications">
+<h3>3. Multi-threaded Applications<a class="headerlink" href="#multi-threaded-applications" title="Link to this heading"></a></h3>
+<p>Variables shared between threads (though atomic operations are usually better).</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">volatile</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">shared_data</span><span class="p">;</span>
+
+<span class="c1">// Thread 1</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">thread1</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">shared_data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">100</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// Thread 2</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">thread2</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">shared_data</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Note:</strong> For proper thread synchronization, use mutexes, semaphores, or atomic operations.</p>
+</section>
+<section id="variables-modified-by-hardware">
+<h3>4. Variables Modified by Hardware<a class="headerlink" href="#variables-modified-by-hardware" title="Link to this heading"></a></h3>
+<p>Variables that represent hardware state or are modified by DMA.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">volatile</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">dma_buffer</span><span class="p">[</span><span class="mi">256</span><span class="p">];</span>
+<span class="k">volatile</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">adc_result</span><span class="p">;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="when-not-to-use-volatile">
+<h2>When NOT to Use volatile<a class="headerlink" href="#when-not-to-use-volatile" title="Link to this heading"></a></h2>
+<ol class="arabic">
+<li><p><strong>Regular Variables</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// Don&#39;t use volatile unnecessarily</span>
+<span class="k">volatile</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">counter</span><span class="p">;</span><span class="w">     </span><span class="c1">// Wrong if just used in normal code</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">counter</span><span class="p">;</span><span class="w">              </span><span class="c1">// Correct</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Thread Synchronization</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// Don&#39;t rely on volatile for thread safety</span>
+<span class="k">volatile</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">shared</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">  </span><span class="c1">// Not thread-safe!</span>
+
+<span class="c1">// Use proper synchronization instead</span>
+<span class="n">pthread_mutex_t</span><span class="w"> </span><span class="n">mutex</span><span class="p">;</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">shared</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Atomic Operations</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// volatile doesn&#39;t guarantee atomicity</span>
+<span class="k">volatile</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">big_value</span><span class="p">;</span><span class="w">  </span><span class="c1">// May not be atomic</span>
+
+<span class="c1">// Use C11 atomic types instead</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdatomic.h&gt;</span>
+<span class="kt">atomic_llong</span><span class="w"> </span><span class="n">big_value</span><span class="p">;</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="embedded-systems-examples">
+<h2>Embedded Systems Examples<a class="headerlink" href="#embedded-systems-examples" title="Link to this heading"></a></h2>
+<section id="example-1-gpio-register-access">
+<h3>Example 1: GPIO Register Access<a class="headerlink" href="#example-1-gpio-register-access" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// STM32 microcontroller GPIO example</span>
+<span class="k">typedef</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">volatile</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">MODER</span><span class="p">;</span><span class="w">    </span><span class="c1">// Mode register</span>
+<span class="w">    </span><span class="k">volatile</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">OTYPER</span><span class="p">;</span><span class="w">   </span><span class="c1">// Output type register</span>
+<span class="w">    </span><span class="k">volatile</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">OSPEEDR</span><span class="p">;</span><span class="w">  </span><span class="c1">// Output speed register</span>
+<span class="w">    </span><span class="k">volatile</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">PUPDR</span><span class="p">;</span><span class="w">    </span><span class="c1">// Pull-up/pull-down register</span>
+<span class="w">    </span><span class="k">volatile</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">IDR</span><span class="p">;</span><span class="w">      </span><span class="c1">// Input data register</span>
+<span class="w">    </span><span class="k">volatile</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">ODR</span><span class="p">;</span><span class="w">      </span><span class="c1">// Output data register</span>
+<span class="w">    </span><span class="k">volatile</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">BSRR</span><span class="p">;</span><span class="w">     </span><span class="c1">// Bit set/reset register</span>
+<span class="w">    </span><span class="k">volatile</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">LCKR</span><span class="p">;</span><span class="w">     </span><span class="c1">// Lock register</span>
+<span class="p">}</span><span class="w"> </span><span class="n">GPIO_TypeDef</span><span class="p">;</span>
+
+<span class="cp">#define GPIOA ((GPIO_TypeDef *)0x40020000)</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">set_pin_high</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">GPIOA</span><span class="o">-&gt;</span><span class="n">ODR</span><span class="w"> </span><span class="o">|=</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="mi">5</span><span class="p">);</span><span class="w">     </span><span class="c1">// Set bit 5</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="example-2-timer-counter">
+<h3>Example 2: Timer Counter<a class="headerlink" href="#example-2-timer-counter" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// Hardware timer counter register</span>
+<span class="cp">#define TIM_CNT (*((volatile uint32_t *)0x40000024))</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">delay_microseconds</span><span class="p">(</span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">us</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">volatile</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">start</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TIM_CNT</span><span class="p">;</span>
+<span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">((</span><span class="n">TIM_CNT</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">start</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">us</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Wait - must read TIM_CNT each iteration</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="example-3-interrupt-flag">
+<h3>Example 3: Interrupt Flag<a class="headerlink" href="#example-3-interrupt-flag" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">volatile</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">uart_rx_ready</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="k">volatile</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">uart_rx_data</span><span class="p">;</span>
+
+<span class="c1">// Interrupt Service Routine</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">UART_IRQHandler</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">UART_Status</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">RX_COMPLETE</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">uart_rx_data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">UART_Data</span><span class="p">;</span>
+<span class="w">        </span><span class="n">uart_rx_ready</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">// Main code</span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">uart_rx_ready</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">process_data</span><span class="p">(</span><span class="n">uart_rx_data</span><span class="p">);</span>
+<span class="w">            </span><span class="n">uart_rx_ready</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="example-4-status-register-polling">
+<h3>Example 4: Status Register Polling<a class="headerlink" href="#example-4-status-register-polling" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#define STATUS_REG (*((volatile uint8_t *)0x5000))</span>
+<span class="cp">#define DATA_READY (1 &lt;&lt; 0)</span>
+
+<span class="kt">uint8_t</span><span class="w"> </span><span class="nf">wait_for_data</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// Poll status register</span>
+<span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="n">STATUS_REG</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">DATA_READY</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Compiler must read STATUS_REG each time</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">read_data</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="example-5-watchdog-timer">
+<h3>Example 5: Watchdog Timer<a class="headerlink" href="#example-5-watchdog-timer" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#define WATCHDOG_KICK (*((volatile uint32_t *)0x40003000))</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">feed_watchdog</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">WATCHDOG_KICK</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0xCAFE</span><span class="p">;</span><span class="w">     </span><span class="c1">// Special value to reset watchdog</span>
+<span class="p">}</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">do_work</span><span class="p">();</span>
+<span class="w">        </span><span class="n">feed_watchdog</span><span class="p">();</span><span class="w">         </span><span class="c1">// Must actually write each time</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="volatile-with-other-qualifiers">
+<h2>volatile with Other Qualifiers<a class="headerlink" href="#volatile-with-other-qualifiers" title="Link to this heading"></a></h2>
+<section id="volatile-and-const">
+<h3>volatile and const<a class="headerlink" href="#volatile-and-const" title="Link to this heading"></a></h3>
+<p>A variable can be both <code class="docutils literal notranslate"><span class="pre">const</span></code> and <code class="docutils literal notranslate"><span class="pre">volatile</span></code>.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// Read-only hardware register that may change</span>
+<span class="k">const</span><span class="w"> </span><span class="k">volatile</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">status_register</span><span class="p">;</span>
+
+<span class="c1">// Can read but cannot write</span>
+<span class="kt">uint32_t</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">status_register</span><span class="p">;</span>
+<span class="c1">// status_register = 0;      // Error! const prevents writing</span>
+</pre></div>
+</div>
+</section>
+<section id="volatile-and-static">
+<h3>volatile and static<a class="headerlink" href="#volatile-and-static" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">static</span><span class="w"> </span><span class="k">volatile</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">module_flag</span><span class="p">;</span><span class="w">  </span><span class="c1">// File-scope volatile variable</span>
+</pre></div>
+</div>
+</section>
+<section id="volatile-in-function-parameters">
+<h3>volatile in Function Parameters<a class="headerlink" href="#volatile-in-function-parameters" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">process_volatile_data</span><span class="p">(</span><span class="k">volatile</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">data</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">local_copy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">*</span><span class="n">data</span><span class="p">;</span><span class="w">   </span><span class="c1">// Read from volatile source</span>
+<span class="w">    </span><span class="c1">// Work with local_copy (non-volatile)</span>
+<span class="w">    </span><span class="o">*</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">local_copy</span><span class="p">;</span><span class="w">       </span><span class="c1">// Write back to volatile</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="common-mistakes-and-pitfalls">
+<h2>Common Mistakes and Pitfalls<a class="headerlink" href="#common-mistakes-and-pitfalls" title="Link to this heading"></a></h2>
+<section id="mistake-1-using-volatile-for-thread-safety">
+<h3>Mistake 1: Using volatile for Thread Safety<a class="headerlink" href="#mistake-1-using-volatile-for-thread-safety" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// WRONG - volatile doesn&#39;t make this thread-safe</span>
+<span class="k">volatile</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">counter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">increment</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">counter</span><span class="o">++</span><span class="p">;</span><span class="w">                </span><span class="c1">// Not atomic! Read-modify-write</span>
+<span class="p">}</span>
+
+<span class="c1">// CORRECT - use atomic or mutex</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdatomic.h&gt;</span>
+<span class="kt">atomic_int</span><span class="w"> </span><span class="n">counter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">increment</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">atomic_fetch_add</span><span class="p">(</span><span class="o">&amp;</span><span class="n">counter</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="mistake-2-thinking-volatile-guarantees-atomicity">
+<h3>Mistake 2: Thinking volatile Guarantees Atomicity<a class="headerlink" href="#mistake-2-thinking-volatile-guarantees-atomicity" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// WRONG - may not be atomic on all platforms</span>
+<span class="k">volatile</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">big_value</span><span class="p">;</span>
+<span class="n">big_value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x123456789ABCDEF0LL</span><span class="p">;</span><span class="w">  </span><span class="c1">// May be two 32-bit writes</span>
+
+<span class="c1">// CORRECT - use appropriate atomic type</span>
+<span class="kt">atomic_llong</span><span class="w"> </span><span class="n">big_value</span><span class="p">;</span>
+</pre></div>
+</div>
+</section>
+<section id="mistake-3-forgetting-volatile-for-isr-variables">
+<h3>Mistake 3: Forgetting volatile for ISR Variables<a class="headerlink" href="#mistake-3-forgetting-volatile-for-isr-variables" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// WRONG - compiler may optimize away the loop</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">flag</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">ISR</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">flag</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">wait</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">flag</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">}</span><span class="w">    </span><span class="c1">// May become infinite loop</span>
+<span class="p">}</span>
+
+<span class="c1">// CORRECT</span>
+<span class="k">volatile</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">flag</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+</pre></div>
+</div>
+</section>
+<section id="mistake-4-over-using-volatile">
+<h3>Mistake 4: Over-using volatile<a class="headerlink" href="#mistake-4-over-using-volatile" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// WRONG - unnecessary volatile</span>
+<span class="k">volatile</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">temp</span><span class="p">;</span>
+<span class="n">temp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">calculate_value</span><span class="p">();</span>
+<span class="n">process</span><span class="p">(</span><span class="n">temp</span><span class="p">);</span>
+
+<span class="c1">// CORRECT - use volatile only when needed</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">temp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">calculate_value</span><span class="p">();</span>
+<span class="n">process</span><span class="p">(</span><span class="n">temp</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="mistake-5-copying-volatile-variables-incorrectly">
+<h3>Mistake 5: Copying volatile Variables Incorrectly<a class="headerlink" href="#mistake-5-copying-volatile-variables-incorrectly" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// WRONG - loses volatile qualifier</span>
+<span class="k">volatile</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="o">*</span><span class="n">hw_reg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="k">volatile</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="mh">0x40000000</span><span class="p">;</span>
+<span class="kt">uint32_t</span><span class="w"> </span><span class="o">*</span><span class="n">ptr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hw_reg</span><span class="p">;</span><span class="w">      </span><span class="c1">// Warning: discards volatile</span>
+
+<span class="c1">// CORRECT - preserve volatile</span>
+<span class="k">volatile</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="o">*</span><span class="n">hw_reg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="k">volatile</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="mh">0x40000000</span><span class="p">;</span>
+<span class="k">volatile</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="o">*</span><span class="n">ptr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hw_reg</span><span class="p">;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="compiler-optimization-and-volatile">
+<h2>Compiler Optimization and volatile<a class="headerlink" href="#compiler-optimization-and-volatile" title="Link to this heading"></a></h2>
+<section id="without-volatile-compiler-optimizations">
+<h3>Without volatile - Compiler Optimizations<a class="headerlink" href="#without-volatile-compiler-optimizations" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
+<span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">20</span><span class="p">;</span>
+<span class="c1">// Compiler may optimize to just: x = 20;</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">z</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">y</span><span class="p">;</span>
+<span class="c1">// Compiler may cache y&#39;s value in a register</span>
+</pre></div>
+</div>
+</section>
+<section id="with-volatile-no-unwanted-optimizations">
+<h3>With volatile - No Unwanted Optimizations<a class="headerlink" href="#with-volatile-no-unwanted-optimizations" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">volatile</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w">                      </span><span class="c1">// Must write 10</span>
+<span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">20</span><span class="p">;</span><span class="w">                      </span><span class="c1">// Must write 20</span>
+<span class="c1">// Both writes happen</span>
+
+<span class="k">volatile</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">z</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">y</span><span class="p">;</span>
+<span class="c1">// y is read from memory twice</span>
+</pre></div>
+</div>
+</section>
+<section id="memory-barriers-and-volatile">
+<h3>Memory Barriers and volatile<a class="headerlink" href="#memory-barriers-and-volatile" title="Link to this heading"></a></h3>
+<p><strong>Note:</strong> <code class="docutils literal notranslate"><span class="pre">volatile</span></code> provides a weak form of memory ordering but doesn’t provide
+full memory barriers on all architectures.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// For strict memory ordering, use compiler barriers</span>
+<span class="cp">#define barrier() __asm__ __volatile__(&quot;&quot;: : :&quot;memory&quot;)</span>
+
+<span class="k">volatile</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">flag</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">writer</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">42</span><span class="p">;</span>
+<span class="w">    </span><span class="n">barrier</span><span class="p">();</span><span class="w">                </span><span class="c1">// Ensure data is written before flag</span>
+<span class="w">    </span><span class="n">flag</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="best-practices">
+<h2>Best Practices<a class="headerlink" href="#best-practices" title="Link to this heading"></a></h2>
+<ol class="arabic">
+<li><p><strong>Use volatile for hardware registers</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#define UART_DR (*((volatile uint32_t *)0x40013804))</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Use volatile for ISR-shared variables</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">volatile</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">irq_count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Don’t use volatile for thread synchronization</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// Use mutexes, atomics, or proper synchronization primitives</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Keep volatile scope minimal</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">volatile</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">sensor_value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">read_sensor</span><span class="p">();</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">local_copy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sensor_value</span><span class="p">;</span><span class="w">  </span><span class="c1">// Work with non-volatile copy</span>
+<span class="n">process</span><span class="p">(</span><span class="n">local_copy</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Document why volatile is used</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// Shared with TIMER_IRQ - must be volatile</span>
+<span class="k">volatile</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">millisecond_counter</span><span class="p">;</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Use fixed-width types with volatile</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdint.h&gt;</span>
+<span class="k">volatile</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">hardware_reg</span><span class="p">;</span><span class="w">  </span><span class="c1">// Size is explicit</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="practice-examples">
+<h2>Practice Examples<a class="headerlink" href="#practice-examples" title="Link to this heading"></a></h2>
+<section id="example-1-simple-isr-communication">
+<h3>Example 1: Simple ISR Communication<a class="headerlink" href="#example-1-simple-isr-communication" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdint.h&gt;</span>
+
+<span class="k">volatile</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">button_pressed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">BUTTON_IRQHandler</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">button_pressed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">enable_button_interrupt</span><span class="p">();</span>
+
+<span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">button_pressed</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Button was pressed!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="w">            </span><span class="n">button_pressed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="example-2-memory-mapped-register">
+<h3>Example 2: Memory-Mapped Register<a class="headerlink" href="#example-2-memory-mapped-register" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdint.h&gt;</span>
+
+<span class="cp">#define LED_REG (*((volatile uint32_t *)0x40020014))</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">toggle_led</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="n">state</span><span class="w"> </span><span class="o">^=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">    </span><span class="n">LED_REG</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">state</span><span class="p">;</span><span class="w">         </span><span class="c1">// Write to hardware register</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="example-3-ring-buffer-with-isr">
+<h3>Example 3: Ring Buffer with ISR<a class="headerlink" href="#example-3-ring-buffer-with-isr" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdint.h&gt;</span>
+
+<span class="cp">#define BUFFER_SIZE 64</span>
+
+<span class="k">volatile</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">rx_buffer</span><span class="p">[</span><span class="n">BUFFER_SIZE</span><span class="p">];</span>
+<span class="k">volatile</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">rx_head</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="k">volatile</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">rx_tail</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="c1">// Called by interrupt</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">UART_RX_IRQHandler</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">UART_DATA_REG</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">next</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">rx_head</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="n">BUFFER_SIZE</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">next</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">rx_tail</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">    </span><span class="c1">// Not full</span>
+<span class="w">        </span><span class="n">rx_buffer</span><span class="p">[</span><span class="n">rx_head</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">data</span><span class="p">;</span>
+<span class="w">        </span><span class="n">rx_head</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">next</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">// Called by main code</span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">get_byte</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="o">*</span><span class="n">data</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">rx_head</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">rx_tail</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">             </span><span class="c1">// Empty</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="o">*</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rx_buffer</span><span class="p">[</span><span class="n">rx_tail</span><span class="p">];</span>
+<span class="w">    </span><span class="n">rx_tail</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">rx_tail</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="n">BUFFER_SIZE</span><span class="p">;</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="example-4-timeout-with-hardware-timer">
+<h3>Example 4: Timeout with Hardware Timer<a class="headerlink" href="#example-4-timeout-with-hardware-timer" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdint.h&gt;</span>
+
+<span class="cp">#define TIMER_COUNT (*((volatile uint32_t *)0x40000024))</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">wait_with_timeout</span><span class="p">(</span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">timeout_ms</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">volatile</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">start</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TIMER_COUNT</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">is_data_ready</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w">         </span><span class="c1">// Success</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">((</span><span class="n">TIMER_COUNT</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">start</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">timeout_ms</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">         </span><span class="c1">// Timeout</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">volatile</span></code> tells the compiler not to optimize away memory accesses</p></li>
+<li><p>Use for hardware registers, ISR-shared variables, and hardware-modified data</p></li>
+<li><p>Does NOT provide thread safety or atomic operations</p></li>
+<li><p>Does NOT guarantee memory barriers on all platforms</p></li>
+<li><p>Essential in embedded systems programming</p></li>
+<li><p>Don’t overuse - only apply where actually needed</p></li>
+<li><p>Combine with other qualifiers (const, static) as appropriate</p></li>
+<li><p>Always document why a variable is volatile</p></li>
+<li><p>Use fixed-width types (uint32_t, etc.) for clarity</p></li>
+<li><p>Consider using proper synchronization primitives for multi-threading</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Ho Thien Ai.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

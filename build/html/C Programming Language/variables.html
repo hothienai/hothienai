@@ -1,0 +1,749 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Variables in C &mdash; Embedded C Programming  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Constants in C" href="constants.html" />
+    <link rel="prev" title="Data Types in C" href="datatypes.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Embedded C Programming
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">C Programming Language</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datatypes.html">Data Types in C</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Variables in C</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#what-is-a-variable">What is a Variable?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#variable-declaration">Variable Declaration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#syntax">Syntax</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#examples">Examples</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#multiple-variables">Multiple Variables</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#variable-initialization">Variable Initialization</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">Syntax</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">Examples</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#multiple-initialization">Multiple Initialization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#declaration-vs-initialization">Declaration vs Initialization</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#variable-naming-rules">Variable Naming Rules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#valid-characters">Valid Characters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rules">Rules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#c-keywords-reserved-words">C Keywords (Reserved Words)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#naming-conventions">Naming Conventions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#snake-case-recommended-for-c">Snake Case (Recommended for C)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#camel-case">Camel Case</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#descriptive-names">Descriptive Names</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#constants-in-all-caps">Constants in All Caps</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#variable-scope">Variable Scope</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#local-variables">Local Variables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#global-variables">Global Variables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#block-scope">Block Scope</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#variable-lifetime">Variable Lifetime</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#automatic-variables">Automatic Variables</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#storage-classes">Storage Classes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#auto">auto</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#extern">extern</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#register">register</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#const-keyword">const Keyword</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#constant-pointers">Constant Pointers</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#variable-assignment">Variable Assignment</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#compound-assignment">Compound Assignment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#increment-and-decrement">Increment and Decrement</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#best-practices">Best Practices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#common-mistakes">Common Mistakes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#practice-examples">Practice Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#example-1-basic-variable-operations">Example 1: Basic Variable Operations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#example-2-variable-scope-demonstration">Example 2: Variable Scope Demonstration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#example-3-constant-variables">Example 3: Constant Variables</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#summary">Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="constants.html">Constants in C</a></li>
+<li class="toctree-l1"><a class="reference internal" href="static-variables.html">Static Variables in C</a></li>
+<li class="toctree-l1"><a class="reference internal" href="volatile-variables.html">Volatile Variables in C</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Embedded C</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../Embedded%20C/introduction.html">Embedded C</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">State Machines</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../State%20Machines/introduction.html">State Machines</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development Boards</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../Development%20Boards/introduction.html">Development Boards</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Embedded C Programming</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Variables in C</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/C Programming Language/variables.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="variables-in-c">
+<h1>Variables in C<a class="headerlink" href="#variables-in-c" title="Link to this heading"></a></h1>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
+<p>A variable is a named storage location in memory that holds a value which can be changed during
+program execution. Variables are fundamental to programming as they allow us to store, manipulate,
+and retrieve data throughout our programs.</p>
+<p>In C, every variable must be:
+- Declared with a specific data type
+- Given a unique name (identifier)
+- Allocated memory space before use</p>
+</section>
+<section id="what-is-a-variable">
+<h2>What is a Variable?<a class="headerlink" href="#what-is-a-variable" title="Link to this heading"></a></h2>
+<p>A variable consists of three main components:</p>
+<ol class="arabic simple">
+<li><p><strong>Name (Identifier):</strong> A symbolic name used to reference the variable</p></li>
+<li><p><strong>Type:</strong> Defines what kind of data the variable can hold</p></li>
+<li><p><strong>Value:</strong> The actual data stored in memory</p></li>
+<li><p><strong>Address:</strong> The memory location where the value is stored</p></li>
+</ol>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">age</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">25</span><span class="p">;</span>
+<span class="c1">// &#39;int&#39; is the type</span>
+<span class="c1">// &#39;age&#39; is the name (identifier)</span>
+<span class="c1">// 25 is the value</span>
+<span class="c1">// The address is assigned by the compiler</span>
+</pre></div>
+</div>
+</section>
+<section id="variable-declaration">
+<h2>Variable Declaration<a class="headerlink" href="#variable-declaration" title="Link to this heading"></a></h2>
+<p>Declaration tells the compiler about the variable’s name and type, allocating memory for it.</p>
+<section id="syntax">
+<h3>Syntax<a class="headerlink" href="#syntax" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">data_type</span><span class="w"> </span><span class="n">variable_name</span><span class="p">;</span>
+</pre></div>
+</div>
+</section>
+<section id="examples">
+<h3>Examples<a class="headerlink" href="#examples" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">count</span><span class="p">;</span><span class="w">                    </span><span class="c1">// Declares an integer variable</span>
+<span class="kt">float</span><span class="w"> </span><span class="n">temperature</span><span class="p">;</span><span class="w">            </span><span class="c1">// Declares a float variable</span>
+<span class="kt">char</span><span class="w"> </span><span class="n">grade</span><span class="p">;</span><span class="w">                   </span><span class="c1">// Declares a character variable</span>
+<span class="kt">double</span><span class="w"> </span><span class="n">price</span><span class="p">;</span><span class="w">                 </span><span class="c1">// Declares a double variable</span>
+</pre></div>
+</div>
+</section>
+<section id="multiple-variables">
+<h3>Multiple Variables<a class="headerlink" href="#multiple-variables" title="Link to this heading"></a></h3>
+<p>You can declare multiple variables of the same type in one statement:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">z</span><span class="p">;</span><span class="w">                  </span><span class="c1">// Declares three integers</span>
+<span class="kt">float</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="n">c</span><span class="p">;</span><span class="w">                </span><span class="c1">// Declares three floats</span>
+<span class="kt">char</span><span class="w"> </span><span class="n">first</span><span class="p">,</span><span class="w"> </span><span class="n">last</span><span class="p">,</span><span class="w"> </span><span class="n">middle</span><span class="p">;</span><span class="w">     </span><span class="c1">// Declares three characters</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="variable-initialization">
+<h2>Variable Initialization<a class="headerlink" href="#variable-initialization" title="Link to this heading"></a></h2>
+<p>Initialization is assigning an initial value to a variable at the time of declaration.</p>
+<section id="id1">
+<h3>Syntax<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">data_type</span><span class="w"> </span><span class="n">variable_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">value</span><span class="p">;</span>
+</pre></div>
+</div>
+</section>
+<section id="id2">
+<h3>Examples<a class="headerlink" href="#id2" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">age</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">25</span><span class="p">;</span><span class="w">                 </span><span class="c1">// Declare and initialize</span>
+<span class="kt">float</span><span class="w"> </span><span class="n">pi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">3.14159f</span><span class="p">;</span>
+<span class="kt">char</span><span class="w"> </span><span class="n">grade</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sc">&#39;A&#39;</span><span class="p">;</span>
+<span class="kt">double</span><span class="w"> </span><span class="n">price</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">99.99</span><span class="p">;</span>
+</pre></div>
+</div>
+</section>
+<section id="multiple-initialization">
+<h3>Multiple Initialization<a class="headerlink" href="#multiple-initialization" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span><span class="w"> </span><span class="n">z</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">30</span><span class="p">;</span>
+<span class="kt">float</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1.5f</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">2.5f</span><span class="p">,</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">3.5f</span><span class="p">;</span>
+</pre></div>
+</div>
+</section>
+<section id="declaration-vs-initialization">
+<h3>Declaration vs Initialization<a class="headerlink" href="#declaration-vs-initialization" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// Declaration only (uninitialized)</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">count</span><span class="p">;</span><span class="w">                    </span><span class="c1">// Contains garbage value</span>
+
+<span class="c1">// Declaration with initialization</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">sum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">                  </span><span class="c1">// Contains 0</span>
+
+<span class="c1">// Declaration then assignment</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">result</span><span class="p">;</span>
+<span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">42</span><span class="p">;</span><span class="w">                  </span><span class="c1">// Assigned later</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="variable-naming-rules">
+<h2>Variable Naming Rules<a class="headerlink" href="#variable-naming-rules" title="Link to this heading"></a></h2>
+<p>Identifiers (variable names) must follow these rules:</p>
+<section id="valid-characters">
+<h3>Valid Characters<a class="headerlink" href="#valid-characters" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Letters: a-z, A-Z</p></li>
+<li><p>Digits: 0-9</p></li>
+<li><p>Underscore: _</p></li>
+</ul>
+</section>
+<section id="rules">
+<h3>Rules<a class="headerlink" href="#rules" title="Link to this heading"></a></h3>
+<ol class="arabic">
+<li><p><strong>Must start with a letter or underscore</strong> (not a digit)</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">age</span><span class="p">;</span><span class="w">           </span><span class="c1">// Valid</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">_temp</span><span class="p">;</span><span class="w">         </span><span class="c1">// Valid</span>
+<span class="kt">int</span><span class="w"> </span><span class="mi">2</span><span class="n">count</span><span class="p">;</span><span class="w">        </span><span class="c1">// Invalid - starts with digit</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Cannot use C keywords</strong> (reserved words)</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="kt">int</span><span class="p">;</span><span class="w">           </span><span class="c1">// Invalid - &#39;int&#39; is a keyword</span>
+<span class="kt">int</span><span class="w"> </span><span class="k">return</span><span class="p">;</span><span class="w">        </span><span class="c1">// Invalid - &#39;return&#39; is a keyword</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">variable</span><span class="p">;</span><span class="w">      </span><span class="c1">// Valid</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Case-sensitive</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">age</span><span class="p">;</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">Age</span><span class="p">;</span><span class="w">           </span><span class="c1">// Different from &#39;age&#39;</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">AGE</span><span class="p">;</span><span class="w">           </span><span class="c1">// Different from both above</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>No spaces or special characters</strong> (except underscore)</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">my_var</span><span class="p">;</span><span class="w">        </span><span class="c1">// Valid</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">my</span><span class="w"> </span><span class="n">var</span><span class="p">;</span><span class="w">        </span><span class="c1">// Invalid - contains space</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">my</span><span class="o">-</span><span class="n">var</span><span class="p">;</span><span class="w">        </span><span class="c1">// Invalid - contains hyphen</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">my$var</span><span class="p">;</span><span class="w">        </span><span class="c1">// Invalid - contains $</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Length limit</strong> - typically up to 31 characters (compiler-dependent)</p></li>
+</ol>
+</section>
+<section id="c-keywords-reserved-words">
+<h3>C Keywords (Reserved Words)<a class="headerlink" href="#c-keywords-reserved-words" title="Link to this heading"></a></h3>
+<p>Cannot be used as variable names:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>auto        break       case        char        const
+continue    default     do          double      else
+enum        extern      float       for         goto
+if          int         long        register    return
+short       signed      sizeof      static      struct
+switch      typedef     union       unsigned    void
+volatile    while
+
+// C99 additions
+_Bool       _Complex    _Imaginary  inline      restrict
+
+// C11 additions
+_Alignas    _Alignof    _Atomic     _Generic    _Noreturn
+_Static_assert          _Thread_local
+</pre></div>
+</div>
+</section>
+</section>
+<section id="naming-conventions">
+<h2>Naming Conventions<a class="headerlink" href="#naming-conventions" title="Link to this heading"></a></h2>
+<p>While not enforced by the compiler, following naming conventions improves code readability:</p>
+<section id="snake-case-recommended-for-c">
+<h3>Snake Case (Recommended for C)<a class="headerlink" href="#snake-case-recommended-for-c" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">student_count</span><span class="p">;</span>
+<span class="kt">float</span><span class="w"> </span><span class="n">average_temperature</span><span class="p">;</span>
+<span class="kt">char</span><span class="w"> </span><span class="n">first_name</span><span class="p">;</span>
+</pre></div>
+</div>
+</section>
+<section id="camel-case">
+<h3>Camel Case<a class="headerlink" href="#camel-case" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">studentCount</span><span class="p">;</span>
+<span class="kt">float</span><span class="w"> </span><span class="n">averageTemperature</span><span class="p">;</span>
+<span class="kt">char</span><span class="w"> </span><span class="n">firstName</span><span class="p">;</span>
+</pre></div>
+</div>
+</section>
+<section id="descriptive-names">
+<h3>Descriptive Names<a class="headerlink" href="#descriptive-names" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// Good - descriptive names</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">user_age</span><span class="p">;</span>
+<span class="kt">float</span><span class="w"> </span><span class="n">product_price</span><span class="p">;</span>
+<span class="kt">char</span><span class="w"> </span><span class="n">grade_letter</span><span class="p">;</span>
+
+<span class="c1">// Poor - unclear names</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="p">;</span>
+<span class="kt">float</span><span class="w"> </span><span class="n">p</span><span class="p">;</span>
+<span class="kt">char</span><span class="w"> </span><span class="n">g</span><span class="p">;</span>
+</pre></div>
+</div>
+</section>
+<section id="constants-in-all-caps">
+<h3>Constants in All Caps<a class="headerlink" href="#constants-in-all-caps" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#define MAX_SIZE 100</span>
+<span class="cp">#define PI 3.14159</span>
+<span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">BUFFER_SIZE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">256</span><span class="p">;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="variable-scope">
+<h2>Variable Scope<a class="headerlink" href="#variable-scope" title="Link to this heading"></a></h2>
+<p>Scope determines where a variable can be accessed in the program.</p>
+<section id="local-variables">
+<h3>Local Variables<a class="headerlink" href="#local-variables" title="Link to this heading"></a></h3>
+<p>Declared inside a function or block, accessible only within that scope.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">myFunction</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">local_var</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w">      </span><span class="c1">// Local to myFunction</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">local_var</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span><span class="w">               </span><span class="c1">// Local to main</span>
+<span class="w">    </span><span class="c1">// printf(&quot;%d&quot;, local_var);  // Error! local_var not accessible</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="global-variables">
+<h3>Global Variables<a class="headerlink" href="#global-variables" title="Link to this heading"></a></h3>
+<p>Declared outside all functions, accessible throughout the program.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">global_var</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">100</span><span class="p">;</span><span class="w">        </span><span class="c1">// Global variable</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">function1</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">global_var</span><span class="p">);</span><span class="w">  </span><span class="c1">// Can access global_var</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">function2</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">global_var</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">200</span><span class="p">;</span><span class="w">        </span><span class="c1">// Can modify global_var</span>
+<span class="p">}</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">global_var</span><span class="p">);</span><span class="w">  </span><span class="c1">// Can access global_var</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="block-scope">
+<h3>Block Scope<a class="headerlink" href="#block-scope" title="Link to this heading"></a></h3>
+<p>Variables declared within a block (between {}) are only visible in that block.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">5</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">20</span><span class="p">;</span><span class="w">          </span><span class="c1">// y only exists in this block</span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="c1">// printf(&quot;%d&quot;, y);      // Error! y not accessible here</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="variable-lifetime">
+<h2>Variable Lifetime<a class="headerlink" href="#variable-lifetime" title="Link to this heading"></a></h2>
+<p>The lifetime of a variable is the duration for which it exists in memory.</p>
+<section id="automatic-variables">
+<h3>Automatic Variables<a class="headerlink" href="#automatic-variables" title="Link to this heading"></a></h3>
+<p>Created when the block is entered, destroyed when the block is exited.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">myFunction</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">auto_var</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w">       </span><span class="c1">// Created when function is called</span>
+<span class="p">}</span><span class="w">                            </span><span class="c1">// Destroyed when function returns</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="storage-classes">
+<h2>Storage Classes<a class="headerlink" href="#storage-classes" title="Link to this heading"></a></h2>
+<p>Storage classes define the scope, lifetime, and visibility of variables.</p>
+<section id="auto">
+<h3>auto<a class="headerlink" href="#auto" title="Link to this heading"></a></h3>
+<p>Default storage class for local variables (rarely used explicitly).</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">myFunction</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w">         </span><span class="c1">// Same as: int x = 10;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="extern">
+<h3>extern<a class="headerlink" href="#extern" title="Link to this heading"></a></h3>
+<p>Declares a variable that is defined in another file.</p>
+<p>File1.c:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">shared_var</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">42</span><span class="p">;</span><span class="w">         </span><span class="c1">// Definition</span>
+</pre></div>
+</div>
+<p>File2.c:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">extern</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">shared_var</span><span class="p">;</span><span class="w">       </span><span class="c1">// Declaration (refers to File1.c)</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">display</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">shared_var</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="register">
+<h3>register<a class="headerlink" href="#register" title="Link to this heading"></a></h3>
+<p>Suggests the compiler store the variable in a CPU register for faster access.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">register</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">counter</span><span class="p">;</span><span class="w">        </span><span class="c1">// Hint to compiler (may be ignored)</span>
+</pre></div>
+</div>
+<p><strong>Note:</strong> Cannot take the address of a register variable.</p>
+</section>
+</section>
+<section id="const-keyword">
+<h2>const Keyword<a class="headerlink" href="#const-keyword" title="Link to this heading"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">const</span></code> keyword makes a variable read-only (cannot be modified after initialization).</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">MAX_SIZE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">100</span><span class="p">;</span>
+<span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">PI</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">3.14159f</span><span class="p">;</span>
+
+<span class="c1">// MAX_SIZE = 200;           // Error! Cannot modify const variable</span>
+</pre></div>
+</div>
+<section id="constant-pointers">
+<h3>Constant Pointers<a class="headerlink" href="#constant-pointers" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
+
+<span class="c1">// Pointer to constant - cannot change value through pointer</span>
+<span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">ptr1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">value</span><span class="p">;</span>
+<span class="c1">// *ptr1 = 20;               // Error!</span>
+<span class="n">ptr1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">other_value</span><span class="p">;</span><span class="w">         </span><span class="c1">// OK - can change pointer itself</span>
+
+<span class="c1">// Constant pointer - cannot change pointer</span>
+<span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="k">const</span><span class="w"> </span><span class="n">ptr2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">value</span><span class="p">;</span>
+<span class="o">*</span><span class="n">ptr2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">20</span><span class="p">;</span><span class="w">                  </span><span class="c1">// OK - can change value</span>
+<span class="c1">// ptr2 = &amp;other_value;      // Error! Cannot change pointer</span>
+
+<span class="c1">// Constant pointer to constant - cannot change either</span>
+<span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="k">const</span><span class="w"> </span><span class="n">ptr3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">value</span><span class="p">;</span>
+<span class="c1">// *ptr3 = 20;               // Error!</span>
+<span class="c1">// ptr3 = &amp;other_value;      // Error!</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="variable-assignment">
+<h2>Variable Assignment<a class="headerlink" href="#variable-assignment" title="Link to this heading"></a></h2>
+<p>After declaration, you can assign values to variables using the assignment operator <code class="docutils literal notranslate"><span class="pre">=</span></code>.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="p">;</span>
+<span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w">                      </span><span class="c1">// Simple assignment</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">x</span><span class="p">;</span><span class="w">                   </span><span class="c1">// Assign value of x to y</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="n">c</span><span class="p">;</span>
+<span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">              </span><span class="c1">// Chain assignment (right to left)</span>
+</pre></div>
+</div>
+<section id="compound-assignment">
+<h3>Compound Assignment<a class="headerlink" href="#compound-assignment" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
+
+<span class="n">x</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span><span class="w">                      </span><span class="c1">// x = x + 5;  (now 15)</span>
+<span class="n">x</span><span class="w"> </span><span class="o">-=</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span><span class="w">                      </span><span class="c1">// x = x - 3;  (now 12)</span>
+<span class="n">x</span><span class="w"> </span><span class="o">*=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w">                      </span><span class="c1">// x = x * 2;  (now 24)</span>
+<span class="n">x</span><span class="w"> </span><span class="o">/=</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span><span class="w">                      </span><span class="c1">// x = x / 4;  (now 6)</span>
+<span class="n">x</span><span class="w"> </span><span class="o">%=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span><span class="w">                      </span><span class="c1">// x = x % 5;  (now 1)</span>
+</pre></div>
+</div>
+</section>
+<section id="increment-and-decrement">
+<h3>Increment and Decrement<a class="headerlink" href="#increment-and-decrement" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span>
+
+<span class="n">count</span><span class="o">++</span><span class="p">;</span><span class="w">                     </span><span class="c1">// Post-increment: count = 6</span>
+<span class="o">++</span><span class="n">count</span><span class="p">;</span><span class="w">                     </span><span class="c1">// Pre-increment: count = 7</span>
+<span class="n">count</span><span class="o">--</span><span class="p">;</span><span class="w">                     </span><span class="c1">// Post-decrement: count = 6</span>
+<span class="o">--</span><span class="n">count</span><span class="p">;</span><span class="w">                     </span><span class="c1">// Pre-decrement: count = 5</span>
+</pre></div>
+</div>
+<p><strong>Difference between pre and post:</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">x</span><span class="o">++</span><span class="p">;</span><span class="w">                 </span><span class="c1">// y = 5, x = 6 (use then increment)</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">++</span><span class="n">a</span><span class="p">;</span><span class="w">                 </span><span class="c1">// b = 6, a = 6 (increment then use)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="best-practices">
+<h2>Best Practices<a class="headerlink" href="#best-practices" title="Link to this heading"></a></h2>
+<ol class="arabic">
+<li><p><strong>Always initialize variables</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">            </span><span class="c1">// Good</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">sum</span><span class="p">;</span><span class="w">                  </span><span class="c1">// Bad - contains garbage value</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Use meaningful names</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">student_age</span><span class="p">;</span><span class="w">          </span><span class="c1">// Good</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">sa</span><span class="p">;</span><span class="w">                   </span><span class="c1">// Poor</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Declare variables close to their use</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">  </span><span class="c1">// Declare i where it&#39;s used</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d &quot;</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Minimize global variables</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// Prefer passing parameters instead of using globals</span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">add</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">b</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Use const for values that shouldn’t change</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">MAX_STUDENTS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">50</span><span class="p">;</span>
+<span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">TAX_RATE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.08f</span><span class="p">;</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Initialize pointers</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">ptr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span><span class="w">          </span><span class="c1">// Good - initialized to NULL</span>
+<span class="c1">// int *ptr;              // Bad - dangling pointer</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="common-mistakes">
+<h2>Common Mistakes<a class="headerlink" href="#common-mistakes" title="Link to this heading"></a></h2>
+<ol class="arabic">
+<li><p><strong>Using uninitialized variables</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="p">;</span>
+<span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="p">);</span><span class="w">          </span><span class="c1">// Undefined behavior!</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Confusing assignment with comparison</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">             </span><span class="c1">// Wrong! This is assignment, not comparison</span>
+<span class="w">    </span><span class="c1">// Always true (10 is non-zero)</span>
+<span class="p">}</span>
+
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">10</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">            </span><span class="c1">// Correct - comparison</span>
+<span class="w">    </span><span class="c1">// This is what you meant</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Variable shadowing</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">20</span><span class="p">;</span><span class="w">           </span><span class="c1">// Shadows outer x</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="p">);</span><span class="w">    </span><span class="c1">// Prints 20</span>
+<span class="p">}</span>
+<span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="p">);</span><span class="w">        </span><span class="c1">// Prints 10</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Modifying const variables</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">MAX</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">100</span><span class="p">;</span>
+<span class="c1">// MAX = 200;             // Error!</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Forgetting to declare variables</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w">                   </span><span class="c1">// Error! x not declared</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="p">;</span><span class="w">                    </span><span class="c1">// Should declare first</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="practice-examples">
+<h2>Practice Examples<a class="headerlink" href="#practice-examples" title="Link to this heading"></a></h2>
+<section id="example-1-basic-variable-operations">
+<h3>Example 1: Basic Variable Operations<a class="headerlink" href="#example-1-basic-variable-operations" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// Declaration and initialization</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">20</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">sum</span><span class="p">,</span><span class="w"> </span><span class="n">diff</span><span class="p">,</span><span class="w"> </span><span class="n">prod</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">// Operations</span>
+<span class="w">    </span><span class="n">sum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">b</span><span class="p">;</span>
+<span class="w">    </span><span class="n">diff</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">a</span><span class="p">;</span>
+<span class="w">    </span><span class="n">prod</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">b</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">// Display results</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;a = %d, b = %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">);</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Sum = %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">sum</span><span class="p">);</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Difference = %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">diff</span><span class="p">);</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Product = %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">prod</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="example-2-variable-scope-demonstration">
+<h3>Example 2: Variable Scope Demonstration<a class="headerlink" href="#example-2-variable-scope-demonstration" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="n">global</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">100</span><span class="p">;</span><span class="w">            </span><span class="c1">// Global variable</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">display</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">local</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">50</span><span class="p">;</span><span class="w">           </span><span class="c1">// Local variable</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Global: %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">global</span><span class="p">);</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Local: %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">local</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">main_var</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">25</span><span class="p">;</span><span class="w">        </span><span class="c1">// Local to main</span>
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;In main - Global: %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">global</span><span class="p">);</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;In main - main_var: %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">main_var</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">display</span><span class="p">();</span>
+<span class="w">    </span><span class="c1">// printf(&quot;%d&quot;, local);   // Error! local not accessible</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="example-3-constant-variables">
+<h3>Example 3: Constant Variables<a class="headerlink" href="#example-3-constant-variables" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// Constant variable</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">MAX_SIZE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">100</span><span class="p">;</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;MAX_SIZE: %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">MAX_SIZE</span><span class="p">);</span>
+<span class="w">    </span><span class="c1">// MAX_SIZE = 200;        // Error!</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Variables are named storage locations for data</p></li>
+<li><p>Must be declared with a type before use</p></li>
+<li><p>Should be initialized to avoid undefined behavior</p></li>
+<li><p>Follow naming rules and conventions for readability</p></li>
+<li><p>Understand scope (local, global, block) and lifetime</p></li>
+<li><p>Use storage classes (auto, extern, register) appropriately</p></li>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">const</span></code> for read-only variables</p></li>
+<li><p>Always initialize variables before use</p></li>
+<li><p>Choose meaningful, descriptive names</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="datatypes.html" class="btn btn-neutral float-left" title="Data Types in C" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="constants.html" class="btn btn-neutral float-right" title="Constants in C" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Ho Thien Ai.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
